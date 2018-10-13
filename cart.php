@@ -5,6 +5,10 @@
  * Date: 9/29/2018
  * Time: 7:49 PM
  */
+
+include ('includes/dblogin.php');
+include ('functions/functions.php');
+
 ?>
 
 <html>
@@ -55,8 +59,8 @@
     <div class="container"> <!--container start-->
         <div class="navbar-header"><!-- navbar-header Start-->
             <a class="navbar-brand home" href="index.php"><!--navbar-brand home start-->
-                <img src="images/logo_light.png" alt="E-commerce Logo" class="hidden-xs">
-                <img src="images/demo_logo-small.png" alt="E-commerce Logo" class="visible-xs">
+                <img src="images/EiShops_resize.png" alt="E-commerce Logo" class="hidden-xs" style="margin-top: 5px;">
+                <img src="images/EiShops_resize.png" alt="E-commerce Logo" class="visible-xs" style="margin-top: 5px;">
             </a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
                 <span class="sr-only">Toggle Navigation</span>

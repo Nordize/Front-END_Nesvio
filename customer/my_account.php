@@ -5,6 +5,10 @@
  * Date: 10/1/2018
  * Time: 9:03 PM
  */
+
+include ('__DIR__/../../includes/dblogin.php');
+#include ('__DIR__/../../functions/functions.php');
+
 ?>
 
 <html>
@@ -25,38 +29,15 @@
 </head>
 
 <body>
-<div id="top"> <!-- top start-->
-    <div class="container"> <!-- container start-->
-        <div class="col-md-6 offer">
-            <a href="#" class="btn btn-success btn-sm">Welcome : Guest</a>
-            <a href="#">Shopping Cart Total Price: $100, Total Item 2</a>
-        </div>
-        <div class="col-md-6"> <!--Header start-->
-            <ul class="menu">
-                <li>
-                    <a href="../customer_register.php">Register</a>
-                </li>
-                <li>
-                    <a href="./my_account.php">My Account</a>
-                </li>
-                <li>
-                    <a href="../cart.php">Go to Cart</a>
-                </li>
-                <li>
-                    <a href="../checkout.php">Login</a>
-                </li>
 
-            </ul>
-        </div>
+<?php include ('customer_includes/customer_top_header.php');?>
 
-    </div>
-</div>
 <div class="navbar navbar-default" id="navbar"> <!--navbar navbar-default start-->
     <div class="container"> <!--container start-->
         <div class="navbar-header"><!-- navbar-header Start-->
             <a class="navbar-brand home" href="../index.php"><!--navbar-brand home start-->
-                <img src="images/logo_light.png" alt="E-commerce Logo" class="hidden-xs">
-                <img src="images/demo_logo-small.png" alt="E-commerce Logo" class="visible-xs">
+                <img src="__DIR__/../../images/EiShops_resize.png" alt="E-commerce Logo" class="hidden-xs" style="margin-top: 5px;">
+                <img src="__DIR__/../../images/EiShops_resize.png" alt="E-commerce Logo" class="visible-xs" style="margin-top: 5px;">
             </a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
                 <span class="sr-only">Toggle Navigation</span>
@@ -135,7 +116,7 @@
         </div> <!--col-md-12 end-->
 
         <div class="col-md-3"><!-- col-md-3-->
-           <?php include ($_SERVER["DOCUMENT_ROOT"]."/ecom_store/admin_includes/sidebar_myaccount.php");?>  <!--bug with php include -->
+           <?php include("customer_includes/sidebar_myaccount.php");?>  <!--bug with php include -->
         </div>
         <div class="col-md-9"><!--col-md-9 start -->
             <div class="box"><!--box start -->
@@ -171,7 +152,7 @@
 </div>
 
 <?php
-include ('includes/footer.php');
+include ('customer_includes/customer_footer.php');
 ?>
 </body>
 

@@ -15,48 +15,39 @@
         </div>
     </div>
 
-    <!--product 1 -->
-    <div class="center-responsive col-md-3 col-sm-6"><!--center-responsive col-md-3 col-sm-6 start -->
-        <div class="product same-height"><!--product same-height start-->
-            <a href="details.php">
-                <img src="admin_area/product_images/product_demo.jpg" class="img-responsive">
-            </a>
+    <?php
+    $get_products = "SELECT * FROM products ORDER BY RAND() LIMIT 0,3";
 
-            <div class="text"><!-- text start -->
-                <h3><a href="details.php">Product Details1</a></h3>
-                <p class="price">$50</p>
+    $run_products = $db_connect->query($get_products);
+
+    while($row_products = $run_products->fetch(PDO::FETCH_BOTH))
+    {
+        $pro_id = $row_products['product_id'];
+        $pro_title = $row_products['product_title'];
+        $pro_price = $row_products['product_price'];
+        $pro_img1 = $row_products['product_img1'];
+
+        echo "
+        <div class='center-responsive col-md-3 col-sm-6'>
+            <div class='product same-height'>
+                <a href='detail.php?pro_id=$pro_id'>
+                <img src='admin_area/product_images/$pro_img1' class='img-responsive'>
+                </a>
+                <div class='text'>
+                    <h3><a href='details.php?pro_id=$pro_id'>$pro_title</a></h3>
+                    
+                    <p class='price'>$$pro_price</p>
+                
+                </div>
             </div>
-
         </div>
-    </div>
-    <!-- product 2-->
-    <div class="center-responsive col-md-3 col-sm-6"><!--center-responsive col-md-3 col-sm-6 start -->
-        <div class="product same-height"><!--product same-height start-->
-            <a href="details.php">
-                <img src="admin_area/product_images/product_demo.jpg" class="img-responsive">
-            </a>
+        ";
 
-            <div class="text"><!-- text start -->
-                <h3><a href="details.php">Product Details2</a></h3>
-                <p class="price">$50</p>
-            </div>
 
-        </div>
-    </div>
-    <!--product 3 -->
-    <div class="center-responsive col-md-3 col-sm-6"><!--center-responsive col-md-3 col-sm-6 start -->
-        <div class="product same-height"><!--product same-height start-->
-            <a href="details.php">
-                <img src="admin_area/product_images/product_demo.jpg" class="img-responsive">
-            </a>
+    }
 
-            <div class="text"><!-- text start -->
-                <h3><a href="details.php">Product Details3</a></h3>
-                <p class="price">$50</p>
-            </div>
 
-        </div>
-    </div>
+    ?>
 
 
 </div> <!-- row same-height-row end -->

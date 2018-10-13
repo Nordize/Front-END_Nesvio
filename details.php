@@ -5,6 +5,43 @@
  * Date: 9/29/2018
  * Time: 6:50 PM
  */
+
+include ('includes/dblogin.php');
+include ('functions/functions.php');
+
+if(isset($_GET['pro_id']))
+{
+    $product_id = $_GET['pro_id'];
+    $get_product = "SELECT * FROM products WHERE product_id = '$product_id'";
+
+    $run_product = $db_connect->query($get_product);
+
+    $row_product = $run_product->fetch(PDO::FETCH_BOTH);
+
+    $p_cat_id = $row_product['p_cat_id'];
+    $pro_title = $row_product['product_title'];
+    $pro_price = $row_product['product_price'];
+    $pro_desc = $row_product['product_desc'];
+    $pro_img1 = $row_product['product_img1'];
+    $pro_img2 = $row_product['product_img2'];
+    $pro_img3 = $row_product['product_img3'];
+
+    $get_p_cat = "SELECT * FROM product_categories WHERE p_cat_id = '$p_cat_id'";
+
+    $run_p_cat = $db_connect->query($get_p_cat);
+
+    $row_p_cat = $run_p_cat->fetch(PDO::FETCH_BOTH);
+
+    $p_cat_title = $row_p_cat['p_cat_title'];
+
+
+}
+
+
+
+
+
+
 ?>
 
 <html>
@@ -25,38 +62,14 @@
 </head>
 
 <body>
-<div id="top"> <!-- top start-->
-    <div class="container"> <!-- container start-->
-        <div class="col-md-6 offer">
-            <a href="#" class="btn btn-success btn-sm">Welcome : Guest</a>
-            <a href="#">Shopping Cart Total Price: $100, Total Item 2</a>
-        </div>
-        <div class="col-md-6"> <!--Header start-->
-            <ul class="menu">
-                <li>
-                    <a href="customer_register.php">Register</a>
-                </li>
-                <li>
-                    <a href="checkout.php">My Account</a>
-                </li>
-                <li>
-                    <a href="cart.php">Go to Cart</a>
-                </li>
-                <li>
-                    <a href="checkout.php">Login</a>
-                </li>
+<?php include ('includes/top_header.php');?>
 
-            </ul>
-        </div>
-
-    </div>
-</div>
 <div class="navbar navbar-default" id="navbar"> <!--navbar navbar-default start-->
     <div class="container"> <!--container start-->
         <div class="navbar-header"><!-- navbar-header Start-->
             <a class="navbar-brand home" href="index.php"><!--navbar-brand home start-->
-                <img src="images/logo_light.png" alt="E-commerce Logo" class="hidden-xs">
-                <img src="images/demo_logo-small.png" alt="E-commerce Logo" class="visible-xs">
+                <img src="images/EiShops_resize.png" alt="E-commerce Logo" class="hidden-xs" style="margin-top: 5px;">
+                <img src="images/EiShops_resize.png" alt="E-commerce Logo" class="visible-xs" style="margin-top: 5px;">
             </a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
                 <span class="sr-only">Toggle Navigation</span>
@@ -129,8 +142,12 @@
                     <a href="index.php">Home</a>
                 </li>
                 <li>
-                    Shop
+                    <a href="shop.php">Shop</a>
                 </li>
+                <li>
+                    <a href="shop.php?p_cat=<?php echo $p_cat_id; ?>"> <?php echo $p_cat_title; ?></a>
+                </li>
+                <li><?php echo $pro_title; ?></li>
             </ul>
         </div>
 
@@ -152,17 +169,17 @@
                             <div class="carousel-inner"><!-- carousel-inner-->
                                 <div class="item active">
                                     <center>
-                                        <img src="admin_area/product_images/product_demo.jpg" class="img-responsive">
+                                        <img src="admin_area/product_images/<?php echo $pro_img1; ?>" class="img-responsive">
                                     </center>
                                 </div>
                                 <div class="item">
                                     <center>
-                                        <img src="admin_area/product_images/product_demo_back.jpg" class="img-responsive">
+                                        <img src="admin_area/product_images/<?php echo $pro_img2; ?>" class="img-responsive">
                                     </center>
                                 </div>
                                 <div class="item">
                                     <center>
-                                        <img src="admin_area/product_images/product_demo.jpg" class="img-responsive">
+                                        <img src="admin_area/product_images/<?php echo $pro_img3; ?>" class="img-responsive">
                                     </center>
                                 </div>
 
@@ -186,13 +203,17 @@
 
                 <div class="col-sm-6"><!--col-sm-6 start -->
                     <div class="box"><!--box start -->
-                        <h1 class="text-center">Product Details1</h1>
-                        <form action="details.php" method="post" class="form-horizontal"><!--form-horizontal -->
+                        <h1 class="text-center"><?php echo $pro_title; ?></h1>
+
+                        <?php add_cart(); ?>
+
+                        <form action="index.php?add_cart=<?php echo$product_id; ?>" method="post" class="form-horizontal"><!--form-horizontal -->
                             <div class="form-group"><!--form-group -->
                                 <label class="col-md-5 control-label">Product Quantity</label>
 
                                 <div class="col-md-7"><!--col-md-7 -->
                                     <select name="product_qty" class="form-control">
+                                        <option>Select Quantity</option>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -218,7 +239,7 @@
                                 </div>
                             </div>
 
-                            <p class="price">$50</p>
+                            <p class="price">$<?php echo $pro_price; ?></p>
                             <p class="text-center buttons"><!--text-center buttons start -->
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fa fa-shopping-cart"></i>Add to Cart
@@ -232,19 +253,19 @@
                     <div class="row" id="thumbs"><!--row start -->
                         <div class="col-xs-4"><!-- col-xs-4-->
                             <a href="#" class="thumb">
-                                <img src="admin_area/product_images/product_demo.jpg" class="img-responsive">
+                                <img src="admin_area/product_images/<?php echo $pro_img1; ?>" class="img-responsive">
 
                             </a>
                         </div>
                         <div class="col-xs-4"><!-- col-xs-4-->
                             <a href="#" class="thumb">
-                                <img src="admin_area/product_images/product_demo_back.jpg" class="img-responsive">
+                                <img src="admin_area/product_images/<?php echo $pro_img2; ?>" class="img-responsive">
 
                             </a>
                         </div>
                         <div class="col-xs-4"><!-- col-xs-4-->
                             <a href="#" class="thumb">
-                                <img src="admin_area/product_images/product_demo.jpg" class="img-responsive">
+                                <img src="admin_area/product_images/<?php echo $pro_img3; ?>" class="img-responsive">
 
                             </a>
                         </div>
@@ -258,7 +279,7 @@
             <div class="box" id="details"><!--box start -->
                 <p><!--p start-->
                     <h4>Product details</h4>
-                    <p>The is the detail of the product.</p>
+                    <p><?php echo $pro_desc; ?></p>
                     <h4>Size</h4>
                     <ul>
                         <li>Small</li>
