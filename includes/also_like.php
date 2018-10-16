@@ -27,10 +27,12 @@
         $pro_price = $row_products['product_price'];
         $pro_img1 = $row_products['product_img1'];
 
+        $pro_price = sprintf('%.2f',$pro_price);
+
         echo "
         <div class='center-responsive col-md-3 col-sm-6'>
             <div class='product same-height'>
-                <a href='detail.php?pro_id=$pro_id'>
+                <a href='details.php?pro_id=$pro_id'>
                 <img src='admin_area/product_images/$pro_img1' class='img-responsive'>
                 </a>
                 <div class='text'>

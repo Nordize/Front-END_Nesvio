@@ -34,28 +34,73 @@ function add_cart()
         $product_qty = $_POST['product_qty'];
         $product_size = $_POST['product_size'];
 
-        $check_product = "SELECT COUNT(*) FROM cart WHERE ip_add = '$ip_add' AND p_id='$p_id'";
+        try{
+            $query_cart = "INSERT INTO cart (p_id,ip_add,qty,p_size) VALUES ('$p_id','$ip_add','$product_qty','$product_size')";
 
-        $run_check = $db_connect->query($check_product);
-        $count = $run_check->fetchColumn();
+            $db_connect->exec($query_cart);
+            $db_connect = null;
 
-        if($count>0)
+            echo"<script>window.open('details.php?pro_id=$p_id','_self')</script>";
+        }
+        catch(PDOException $e)
         {
-            echo"<script>alert('This Product is already added in cart')</script>";
-            echo"<script>window.open('details.php?pro_id=$p_id','_self')</script>";
+            echo $query_cart . "<br>" . $e->getMessage();
         }
-        else{
-            $query_cart = "INSERT INTO cart (p_id,ip_add,qty,size) VALUES ('$p_id','$ip_add','$product_qty',$product_size)";
 
-            $run_query_cart = $db_connect->query($query_cart);
-
-            echo"<script>window.open('details.php?pro_id=$p_id','_self')</script>";
-
-
-        }
 
     }
 }
+#total price function start
+function total_price()
+{
+    global $db_connect;
+    $ip_add = getRealUserIp();
+
+    $total =0;
+
+    $select_cart = "SELECT * FROM cart WHERE ip_add = '$ip_add'";
+
+    $run_cart = $db_connect->query($select_cart);
+
+    while($record = $run_cart->fetch(PDO::FETCH_BOTH))
+    {
+        $pro_id = $record['p_id'];
+        $pro_qty = $record['qty'];
+        $get_price = "SELECT * FROM products WHERE product_id = '$pro_id'";
+
+        $run_price = $db_connect->query($get_price);
+
+        while($row_price = $run_price->fetch(PDO::FETCH_BOTH))
+        {
+            $sub_total = $row_price['product_price']*$pro_qty;
+            $total += $sub_total;
+        }
+
+
+
+
+    }
+    echo"$".$total;
+}
+
+
+#item_in_cart function start
+function items_in_cart()
+{
+    global $db_connect;
+
+    $ip_add = getRealUserIp();
+
+    $get_items_in_cart = "SELECT COUNT(*) FROM cart WHERE ip_add='$ip_add'";
+
+    $run_items_in_cart = $db_connect->query($get_items_in_cart);
+
+    $count_items_in_cart = $run_items_in_cart->fetchColumn();
+
+    echo $count_items_in_cart;
+}
+
+
 
 #get today deal function start
 function get_today_deal()
@@ -191,6 +236,8 @@ function get_p_cat_pro()
             $pro_price = $row_products['product_price'];
             $pro_img1 = $row_products['product_img1'];
 
+            $pro_price = sprintf('%.2f',$pro_price);
+
             echo"
             <div class='col-md-4 col-sm-6 center-responsive'>
                 <div class='product'>
@@ -269,6 +316,8 @@ function get_catpro()
             $pro_price = $row_query_get_cat['product_price'];
             $pro_img1 = $row_query_get_cat['product_img1'];
 
+            $pro_price = sprintf('%.2f',$pro_price);
+
             echo"
             <div class='col-md-4 col-sm-6 center-responsive'>
                 <div class='product'>
@@ -296,7 +345,29 @@ function get_catpro()
     }
 }
 
+#function update_cart start
+function update_cart()
+{
+    global $db_connect;
 
+    if(isset($_POST['update']))
+    {
+        foreach ($_POST['remove'] as $remove_id)
+        {
+            $delete_product = "DELETE FROM cart WHERE p_id ='$remove_id'";
+
+            $run_delete = $db_connect->query($delete_product);
+
+            if($run_delete)
+            {
+                echo"<script>window.open('cart.php','_self')</script>";
+            }
+        }
+    }
+
+   # echo @$up_cart = update_cart();
+
+}
 
 ?>
 

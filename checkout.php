@@ -2,14 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: Nordize
- * Date: 9/29/2018
- * Time: 4:52 PM
+ * Date: 10/15/2018
+ * Time: 9:39 PM
  */
 
 session_start();
 include ('includes/dblogin.php');
 include ('functions/functions.php');
+
 ?>
+
+
 
 <html>
 
@@ -94,10 +97,10 @@ include ('functions/functions.php');
         <div class="navbar-collapse collapse" id="navigation"> <!--navbar-collapse collapse Starts-->
             <div class="padding-nav"> <!--padding-nav Starts-->
                 <ul class="nav navbar-nav navbar-left"><!-- nav navbar-nav navbar-left start-->
-                    <li >
+                    <li  class="active">
                         <a href="index.php">Home</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="shop.php">Shop</a>
                     </li>
                     <li>
@@ -112,7 +115,7 @@ include ('functions/functions.php');
                     <li>
                         <a href="#">Sell</a>
                     </li>
-                    <li>
+                    <li >
                         <a href="contact.php">Contact Us</a>
                     </li>
                 </ul>
@@ -131,20 +134,20 @@ include ('functions/functions.php');
                 <form class="navbar-form" method="get" action="results.php"><!--navbar-form start-->
                     <button type="button" value="All" name="all" class="btn btn-primary" style="height: 33px;">
                         All <!-- comeback to do the all category-->
-                        </button>
-                        <div class="input-group"><!--input-group start-->
+                    </button>
+                    <div class="input-group"><!--input-group start-->
                         <input class="form-control" type="text" placeholder="Search" name="user_query" style="width: 995px" required>
                         <span class="input-group-btn"><!--input-group-btn start-->
                                 <button type="submit" value="Search" name="search" class="btn btn-primary" style="height: 33px;">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
+                    </div>
+                </form>
             </div>
-            </form>
-        </div>
 
+        </div>
     </div>
-</div>
 </div>
 <!--End of Navigator bar-->
 
@@ -156,7 +159,7 @@ include ('functions/functions.php');
                     <a href="index.php">Home</a>
                 </li>
                 <li>
-                    Shop
+                    Register
                 </li>
             </ul>
         </div> <!--col-md-12 end-->
@@ -165,134 +168,17 @@ include ('functions/functions.php');
             <?php include ("includes/sidebar.php");?>
         </div>
 
-        <div class="col-md-9"><!-- col-md-9 start-->
+        <!-- checkout code start here -->
+        <div class="col-md-9"> <!--col-md-9 start -->
             <?php
-                if(!isset($_GET['p_cat']))
-                {
-                    if(!isset($_GET['cat']))
-                    {
-                        echo"
-                        <div class='box'>
-                            <h1>Shop</h1>
-                            <p>TEST detail for shop</p>
-                        </div>
-                        ";
-                    }
-                }
+            if(!isset($_SESSION['customer_username']))
+            {
+                include('login.php');
+            }else{
+                include ('payment_option.php');
+            }
             ?>
-
-            <div class="row"><!--row start -->
-                <?php
-
-                if(!isset($_GET['p_cat']))
-                {
-
-                    if (!isset($_GET['cat']))
-                    {
-                        $per_page = 6;
-                        if(isset($_GET['page']))
-                        {
-                            $page = $_GET['page'];
-                        }else{
-                            $page=1;
-                        }
-
-                        $start_from = ($page-1) * $per_page;
-
-                        $get_products = "SELECT * FROM products ORDER BY 1 DESC LIMIT $start_from, $per_page";
-
-                        $run_products = $db_connect->query($get_products);
-
-                        if ($run_products->rowCount() >0) {
-                            while($row_products = $run_products->fetch())
-                            {
-
-                                $pro_id = $row_products['product_id'];
-                                $pro_title = $row_products['product_title'];
-                                $pro_price = $row_products['product_price'];
-                                $pro_img1 = $row_products['product_img1'];
-
-                                $pro_price = sprintf('%.2f',$pro_price);
-
-                                echo "
-                                <div class='col-md-4 col-sm-6' center-responsive>
-                                    <div class='product'>
-                                        <a href='details.php?pro_id=$pro_id'>
-                                            <img src='admin_area/product_images/$pro_img1' class='img-responsive'>
-                                        
-                                        </a>
-                                        <div class='text'>
-                                            <h3><a href='details.php?pro_id=$pro_id'>$pro_title</a></h3>
-                                            <p class='price'>$ $pro_price</p>
-                                            <p class='buttons'>
-                                                <a href='details.php?pro_id=$pro_id' class='btn btn-default'>View Details</a>
-                                                <a href='details.php?pro_id=$pro_id' class='btn btn-primary'>
-                                                <i class='fa fa-shopping-cart'></i> Add to Cart
-                                                </a>
-                                            </p>
-                                        
-                                        </div>
-                                                                        
-                                    </div>
-                                </div>
-                                ";
-
-                            }
-                        }
-
-
-                ?>
-
-
-            </div>
-
-            <center><!--center start -->
-                <ul class="pagination"><!--pagination start -->
-                <?php
-
-                    $query = "SELECT COUNT(*) FROM products";
-                    $result = $db_connect->query($query);
-
-                    if ($result->rowCount() >0) {
-                        while($total_records = $result->fetchColumn()){
-                            $total_pages = ceil($total_records/$per_page);
-
-                            echo"
-                            <li><a href='shop.php?page=1'>".'First Page'."</a></li>
-                            ";
-
-                            for($i=1;$i<=$total_pages;$i++)
-                            {
-                                echo"
-                                <li><a href='shop.php?page=".$i."' > ".$i."</a> </li>
-                                ";
-
-                            };
-
-                            echo"
-                                <li><a href='shop.php?page=$total_pages'>".'Last Page'."</a></li>
-                            ";
-
-
-
-                        }}
-                        }
-                    }
-
-                ?>
-
-                </ul><!--pagination end -->
-            </center>
-
-            <?php
-            get_p_cat_pro();
-            get_catpro()
-            ?>
-
-
-
         </div>
-
 
     </div> <!--container end-->
 </div> <!--content end-->
@@ -305,3 +191,5 @@ include ('includes/footer.php');
 
 </body>
 </html>
+
+

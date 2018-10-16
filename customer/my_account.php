@@ -6,8 +6,10 @@
  * Time: 9:03 PM
  */
 
+session_start();
+
 include ('__DIR__/../../includes/dblogin.php');
-#include ('__DIR__/../../functions/functions.php');
+include ('__DIR__/../functions/customer_function.php');
 
 ?>
 
@@ -25,12 +27,55 @@ include ('__DIR__/../../includes/dblogin.php');
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script scr="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </head>
 
 <body>
 
-<?php include ('customer_includes/customer_top_header.php');?>
+<div id="top"> <!-- top start-->
+    <div class="container"> <!-- container start-->
+        <div class="col-md-6 offer">
+            <a href="#" class="btn btn-success btn-sm">
+                <?php
+                if(!isset($_SESSION['customer_username']))
+                {
+                    echo "Welcome: Guest";
+                }
+                else{
+                    echo"Welcome: ".$_SESSION['customer_username']."";
+                }
+                ?>
+            </a>
+            <a href="#">Shopping Cart Total Price: <?php total_price();?>, Total Item <?php items_in_cart();?></a>
+        </div>
+        <div class="col-md-6"> <!--Header start-->
+            <ul class="menu">
+                <li>
+                    <a href="../customer_register.php">Register</a>
+                </li>
+                <li>
+                    <a href="my_account.php">My Account</a>
+                </li>
+                <li>
+                    <a href="../cart.php">Go to Cart</a>
+                </li>
+                <li>
+                    <?php
+                    if(!isset($_SESSION['customer_username']))
+                    {
+                        echo "<a href='../login.php'>Login</a>";
+                    }
+                    else{
+                        echo"<a href='../logout.php'>Logout</a>";
+                    }
+                    ?>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
 
 <div class="navbar navbar-default" id="navbar"> <!--navbar navbar-default start-->
     <div class="container"> <!--container start-->
@@ -67,13 +112,16 @@ include ('__DIR__/../../includes/dblogin.php');
                         <a href="../cart.php">Shopping Cart</a>
                     </li>
                     <li>
+                        <a href="#">Sell</a>
+                    </li>
+                    <li>
                         <a href="../contact.php">Contact Us</a>
                     </li>
                 </ul>
             </div>
             <a class="btn btn-primary navbar-btn right" href="cart.php"><!--btn btn-primary navbar-btn right start-->
                 <i class="fa fa-shopping-cart"></i>
-                <span>4 items in cart</span>
+                <span><?php items_in_cart();?> items in cart</span>
             </a>
             <div class="navbar-collapse collapse right"><!--navbar-collapse collapse right start-->
                 <button class="btn navbar-btn btn-primary" type="button" data-toggle="collapse" data-target="#search" style="height: 33px;">

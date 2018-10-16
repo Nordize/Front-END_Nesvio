@@ -6,6 +6,7 @@
  * Time: 8:02 PM
  */
 
+session_start();
 include ('includes/dblogin.php');
 include ('functions/functions.php');
 ?>
@@ -30,7 +31,50 @@ include ('functions/functions.php');
 
 <body>
 
-<?php include ('includes/top_header.php');?>
+<div id="top"> <!-- top start-->
+    <div class="container"> <!-- container start-->
+        <div class="col-md-6 offer">
+            <a href="#" class="btn btn-success btn-sm">
+                <?php
+                if(!isset($_SESSION['customer_username']))
+                {
+                    echo "Welcome: Guest";
+                }
+                else{
+                    echo"Welcome: ".$_SESSION['customer_username']."";
+                }
+                ?>
+            </a>
+            <a href="#">Shopping Cart Total Price: <?php total_price();?>, Total Item <?php items_in_cart();?></a>
+        </div>
+        <div class="col-md-6"> <!--Header start-->
+            <ul class="menu">
+                <li>
+                    <a href="customer_register.php">Register</a>
+                </li>
+                <li>
+                    <a href="./customer/my_account.php">My Account</a>
+                </li>
+                <li>
+                    <a href="cart.php">Go to Cart</a>
+                </li>
+                <li>
+                    <?php
+                    if(!isset($_SESSION['customer_username']))
+                    {
+                        echo "<a href='login.php'>Login</a>";
+                    }
+                    else{
+                        echo"<a href='logout.php'>Logout</a>";
+                    }
+                    ?>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
 
 <div class="navbar navbar-default" id="navbar"> <!--navbar navbar-default start-->
     <div class="container"> <!--container start-->
@@ -66,6 +110,9 @@ include ('functions/functions.php');
                     <li>
                         <a href="cart.php">Shopping Cart</a>
                     </li>
+                    <li>
+                        <a href="#">Sell</a>
+                    </li>
                     <li  class="active">
                         <a href="contact.php">Contact Us</a>
                     </li>
@@ -73,7 +120,7 @@ include ('functions/functions.php');
             </div>
             <a class="btn btn-primary navbar-btn right" href="cart.php"><!--btn btn-primary navbar-btn right start-->
                 <i class="fa fa-shopping-cart"></i>
-                <span>4 items in cart</span>
+                <span><?php items_in_cart();?> items in cart</span>
             </a>
             <div class="navbar-collapse collapse right"><!--navbar-collapse collapse right start-->
                 <button class="btn navbar-btn btn-primary" type="button" data-toggle="collapse" data-target="#search" style="height: 33px;">
@@ -158,6 +205,31 @@ include ('functions/functions.php');
 
                 </form>
 
+                <?php
+                if(isset($_POST['submit']))
+                {
+                    $sender_name = $_POST['name'];
+                    $sender_email = $_POST['email'];
+                    $sender_subject = $_POST['subject'];
+                    $sender_message = $_POST['message'];
+
+                    $receiver_email = 'panupong.wong@gmail.com'; //need to change to admin@nesvio.com
+
+                    mail($receiver_email,$sender_name,$sender_email,$sender_subject,$sender_message);
+
+                    //send email back to sender through this code
+                    $email = $_POST['email'];
+                    $subject = "Welcome to my website";
+
+                    $msg = "I shall get you soon, thanks for sending us email";
+
+                    $from = 'panupong.wong@gmail.com';
+
+                    mail($email,$subject,$msg,$from);
+
+                    echo "<h2 align='center'>Your message has been sent successfully.</h2>";
+                }
+                ?>
 
 
 

@@ -16,16 +16,16 @@ include ('includes/dblogin.php');
             <div class="col-md-3 col-sm-6"><!--col-md-3 col-sm-6 start-->
                 <h4>Pages</h4>
                 <ul><!-- ul start-->
-                    <li><a href="../cart.php">Shopping Cart</a></li>
-                    <li><a href="../contact.php">Contact Us</a> </li>
-                    <li><a href="../shop.php">Shop</a> </li>
-                    <li><a href="../customer/my_account.php">My Account</a> </li>
+                    <li><a href="cart.php">Shopping Cart</a></li>
+                    <li><a href="contact.php">Contact Us</a> </li>
+                    <li><a href="shop.php">Shop</a> </li>
+                    <li><a href="__DIR__/../customer/my_account.php">My Account</a> </li>
                 </ul>
                 <hr>
                 <h4>User Section</h4>
                 <ul><!-- ul start-->
-                    <li><a href="../checkout.php">Login</a> </li>
-                    <li><a href="../customer_register.php">Register</a> </li>
+                    <li><a href="checkout.php">Login</a> </li>
+                    <li><a href="customer_register.php">Register</a> </li>
                 </ul>
                 <hr class="hidden-md hidden-lg hidden-sm">
             </div>

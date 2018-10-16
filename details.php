@@ -6,6 +6,8 @@
  * Time: 6:50 PM
  */
 
+
+session_start();
 include ('includes/dblogin.php');
 include ('functions/functions.php');
 
@@ -62,7 +64,50 @@ if(isset($_GET['pro_id']))
 </head>
 
 <body>
-<?php include ('includes/top_header.php');?>
+<div id="top"> <!-- top start-->
+    <div class="container"> <!-- container start-->
+        <div class="col-md-6 offer">
+            <a href="#" class="btn btn-success btn-sm">
+                <?php
+                if(!isset($_SESSION['customer_username']))
+                {
+                    echo "Welcome: Guest";
+                }
+                else{
+                    echo"Welcome: ".$_SESSION['customer_username']."";
+                }
+                ?>
+            </a>
+            <a href="#">Shopping Cart Total Price: <?php total_price();?>, Total Item <?php items_in_cart();?></a>
+        </div>
+        <div class="col-md-6"> <!--Header start-->
+            <ul class="menu">
+                <li>
+                    <a href="customer_register.php">Register</a>
+                </li>
+                <li>
+                    <a href="./customer/my_account.php">My Account</a>
+                </li>
+                <li>
+                    <a href="cart.php">Go to Cart</a>
+                </li>
+                <li>
+                    <?php
+                    if(!isset($_SESSION['customer_username']))
+                    {
+                        echo "<a href='login.php'>Login</a>";
+                    }
+                    else{
+                        echo"<a href='logout.php'>Logout</a>";
+                    }
+                    ?>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
 
 <div class="navbar navbar-default" id="navbar"> <!--navbar navbar-default start-->
     <div class="container"> <!--container start-->
@@ -99,13 +144,16 @@ if(isset($_GET['pro_id']))
                         <a href="cart.php">Shopping Cart</a>
                     </li>
                     <li>
+                        <a href="#">Sell</a>
+                    </li>
+                    <li>
                         <a href="contact.php">Contact Us</a>
                     </li>
                 </ul>
             </div>
             <a class="btn btn-primary navbar-btn right" href="cart.php"><!--btn btn-primary navbar-btn right start-->
                 <i class="fa fa-shopping-cart"></i>
-                <span>4 items in cart</span>
+                <span><?php items_in_cart();?> items in cart</span>
             </a>
             <div class="navbar-collapse collapse right"><!--navbar-collapse collapse right start-->
                 <button class="btn navbar-btn btn-primary" type="button" data-toggle="collapse" data-target="#search" style="height: 33px;">
@@ -147,7 +195,9 @@ if(isset($_GET['pro_id']))
                 <li>
                     <a href="shop.php?p_cat=<?php echo $p_cat_id; ?>"> <?php echo $p_cat_title; ?></a>
                 </li>
-                <li><?php echo $pro_title; ?></li>
+                <li>
+                    <?php echo $pro_title; ?>
+                </li>
             </ul>
         </div>
 
@@ -207,7 +257,7 @@ if(isset($_GET['pro_id']))
 
                         <?php add_cart(); ?>
 
-                        <form action="index.php?add_cart=<?php echo$product_id; ?>" method="post" class="form-horizontal"><!--form-horizontal -->
+                        <form action="details.php?add_cart=<?php echo$product_id; ?>" method="post" class="form-horizontal"><!--form-horizontal -->
                             <div class="form-group"><!--form-group -->
                                 <label class="col-md-5 control-label">Product Quantity</label>
 

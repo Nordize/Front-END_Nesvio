@@ -6,6 +6,7 @@
  * Time: 7:49 PM
  */
 
+session_start();
 include ('includes/dblogin.php');
 include ('functions/functions.php');
 
@@ -32,8 +33,18 @@ include ('functions/functions.php');
 <div id="top"> <!-- top start-->
     <div class="container"> <!-- container start-->
         <div class="col-md-6 offer">
-            <a href="#" class="btn btn-success btn-sm">Welcome : Guest</a>
-            <a href="#">Shopping Cart Total Price: $100, Total Item 2</a>
+            <a href="#" class="btn btn-success btn-sm">
+                <?php
+                if(!isset($_SESSION['customer_username']))
+                {
+                    echo "Welcome: Guest";
+                }
+                else{
+                    echo"Welcome: ".$_SESSION['customer_username']."";
+                }
+                ?>
+            </a>
+            <a href="#">Shopping Cart Total Price: <?php total_price();?>, Total Item <?php items_in_cart();?></a>
         </div>
         <div class="col-md-6"> <!--Header start-->
             <ul class="menu">
@@ -47,7 +58,15 @@ include ('functions/functions.php');
                     <a href="cart.php">Go to Cart</a>
                 </li>
                 <li>
-                    <a href="checkout.php">Login</a>
+                    <?php
+                    if(!isset($_SESSION['customer_username']))
+                    {
+                        echo "<a href='login.php'>Login</a>";
+                    }
+                    else{
+                        echo"<a href='logout.php'>Logout</a>";
+                    }
+                    ?>
                 </li>
 
             </ul>
@@ -90,13 +109,16 @@ include ('functions/functions.php');
                         <a href="cart.php">Shopping Cart</a>
                     </li>
                     <li>
+                        <a href="#">Sell</a>
+                    </li>
+                    <li>
                         <a href="contact.php">Contact Us</a>
                     </li>
                 </ul>
             </div>
             <a class="btn btn-primary navbar-btn right" href="cart.php"><!--btn btn-primary navbar-btn right start-->
                 <i class="fa fa-shopping-cart"></i>
-                <span>4 items in cart</span>
+                <span><?php items_in_cart();?> items in cart</span>
             </a>
             <div class="navbar-collapse collapse right"><!--navbar-collapse collapse right start-->
                 <button class="btn navbar-btn btn-primary" type="button" data-toggle="collapse" data-target="#search" style="height: 33px;">
@@ -143,7 +165,7 @@ include ('functions/functions.php');
             <div class="box"><!-- box start -->
                 <form action="cart.php" method="post" enctype="multipart-form-data"><!--multipart-form-data -->
                     <h1>Shopping Cart</h1>
-                    <p class="text-muted">You currently have 3 item(s) in your cart.</p>
+                    <p class="text-muted">You currently have <?php items_in_cart();?> item(s) in your cart.</p>
                     <div class="table-reponsive"><!--table-reponsive -->
                         <table class="table"><!--table start -->
                             <thead><!--thead start -->
@@ -156,89 +178,7 @@ include ('functions/functions.php');
                                     <th colspan="2">Sub Total</th>
                                 </tr>
                             </thead>
-
-                            <tbody><!--tbody start -->
-                                <tr><!-- tr start -->
-                                    <td>
-                                        <img src="admin_area/product_images/product_demo.jpg">
-                                    </td>
-                                    <td>
-                                        <a href="#">Product Details1</a>
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>
-                                        $50.00
-                                    </td>
-                                    <td>
-                                        Large
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="remove[]">
-                                    </td>
-                                    <td>
-                                        $100.00
-                                    </td>
-
-                                </tr>
-                            <tr><!-- tr start -->
-                                <td>
-                                    <img src="admin_area/product_images/product_demo.jpg">
-                                </td>
-                                <td>
-                                    <a href="#">Product Details1</a>
-                                </td>
-                                <td>
-                                    2
-                                </td>
-                                <td>
-                                    $50.00
-                                </td>
-                                <td>
-                                    Large
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="remove[]">
-                                </td>
-                                <td>
-                                    $100.00
-                                </td>
-
-                            </tr>
-                            <tr><!-- tr start -->
-                                <td>
-                                    <img src="admin_area/product_images/product_demo.jpg">
-                                </td>
-                                <td>
-                                    <a href="#">Product Details1</a>
-                                </td>
-                                <td>
-                                    2
-                                </td>
-                                <td>
-                                    $50.00
-                                </td>
-                                <td>
-                                    Large
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="remove[]">
-                                </td>
-                                <td>
-                                    $100.00
-                                </td>
-
-                            </tr>
-                            </tbody>
-                            <tfoot><!--tfoot start -->
-                                <tr>
-                                    <th colspan="5">Total</th>
-                                    <th colspan="2">$100.00</th>
-                                </tr>
-                            </tfoot>
-
-
+                                <?php include ('includes/show_shopping_cart.php');?>
                         </table>
 
                     </div>
@@ -250,6 +190,7 @@ include ('functions/functions.php');
                             </a>
                         </div>
                         <div class="pull-right"><!--pull-right -->
+                            <?php update_cart();?>
                             <button class="btn btn-default" type="submit" name="update" value="Update Cart">
                                 <i class="fa fa-refresh"></i>Update Cart
 
@@ -257,9 +198,7 @@ include ('functions/functions.php');
 
                             <a href="checkout.php" class="btn btn-primary">
                                 Proceed to checkout <i class="fa fa-chevron-right"></i>
-
                             </a>
-
                         </div>
                     </div>
 
@@ -267,7 +206,8 @@ include ('functions/functions.php');
 
             </div>
 
-            <?php include ("includes/also_like.php")?>
+
+            <?php include ("includes/also_like.php");?>
 
         </div>
 
@@ -284,24 +224,9 @@ include ('functions/functions.php');
 
                 <div class="table-responsive"><!-- table-responsive-->
                     <table class="table"><!--table start-->
-                        <tbody><!--tbody start -->
-                            <tr>
-                                <td>Order Subtotal</td>
-                                <th>$200.00</th>
-                            </tr>
-                        <tr>
-                            <td>Shipping and handling</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                           <td>Tax</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr class="total">
-                            <td>Total</td>
-                            <th>$200.00</th>
-                        </tr>
-                        </tbody>
+
+                        <?php include ('includes/show_order_summary.php');?>
+
                     </table>
                 </div>
 
