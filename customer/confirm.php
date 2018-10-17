@@ -6,7 +6,17 @@
  * Time: 7:54 PM
  */
 
+session_start();
+
+if(!isset($_SESSION['customer_username']))
+{
+    echo "<script>window.open('../checkout.php','_self')</script>";
+}else{
+
+
+
 include ('__DIR__/../../includes/dblogin.php');
+include ('functions/customer_function.php');
 ?>
 
 <html>
@@ -28,14 +38,57 @@ include ('__DIR__/../../includes/dblogin.php');
 
 <body>
 
-<?php include ('customer_includes/customer_top_header.php');?>
+<div id="top"> <!-- top start-->
+    <div class="container"> <!-- container start-->
+        <div class="col-md-6 offer">
+            <a href="#" class="btn btn-success btn-sm">
+                <?php
+                if(!isset($_SESSION['customer_username']))
+                {
+                    echo "Welcome: Guest";
+                }
+                else{
+                    echo"Welcome: ".$_SESSION['customer_username']."";
+                }
+                ?>
+            </a>
+            <a href="#">Shopping Cart Total Price: <?php total_price();?>, Total Item <?php items_in_cart();?></a>
+        </div>
+        <div class="col-md-6"> <!--Header start-->
+            <ul class="menu">
+                <li>
+                    <a href="../customer_register.php">Register</a>
+                </li>
+                <li>
+                    <a href="my_account.php">My Account</a>
+                </li>
+                <li>
+                    <a href="../cart.php">Go to Cart</a>
+                </li>
+                <li>
+                    <?php
+                    if(!isset($_SESSION['customer_username']))
+                    {
+                        echo "<a href='../checkout.php'>Login</a>";
+                    }
+                    else{
+                        echo"<a href='../logout.php'>Logout</a>";
+                    }
+                    ?>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
 
 <div class="navbar navbar-default" id="navbar"> <!--navbar navbar-default start-->
     <div class="container"> <!--container start-->
         <div class="navbar-header"><!-- navbar-header Start-->
             <a class="navbar-brand home" href="../index.php"><!--navbar-brand home start-->
-                <img src="images/logo_light.png" alt="E-commerce Logo" class="hidden-xs">
-                <img src="images/demo_logo-small.png" alt="E-commerce Logo" class="visible-xs">
+                <img src="__DIR__/../../images/EiShops_resize.png" alt="E-commerce Logo" class="hidden-xs" style="margin-top: 5px;">
+                <img src="__DIR__/../../images/EiShops_resize.png" alt="E-commerce Logo" class="visible-xs" style="margin-top: 5px;">
             </a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
                 <span class="sr-only">Toggle Navigation</span>
@@ -71,7 +124,7 @@ include ('__DIR__/../../includes/dblogin.php');
             </div>
             <a class="btn btn-primary navbar-btn right" href="cart.php"><!--btn btn-primary navbar-btn right start-->
                 <i class="fa fa-shopping-cart"></i>
-                <span>4 items in cart</span>
+                <span><?php items_in_cart();?> items in cart</span>
             </a>
             <div class="navbar-collapse collapse right"><!--navbar-collapse collapse right start-->
                 <button class="btn navbar-btn btn-primary" type="button" data-toggle="collapse" data-target="#search" style="height: 33px;">
@@ -105,7 +158,7 @@ include ('__DIR__/../../includes/dblogin.php');
         <div class="col-md-12"><!--col-md-12 start-->
             <ul class="breadcrumb"><!--breadcrumb start -->
                 <li>
-                    <a href="index.php">Home</a>
+                    <a href="../index.php">Home</a>
                 </li>
                 <li>
                     My Account
@@ -119,40 +172,25 @@ include ('__DIR__/../../includes/dblogin.php');
 
         <div class="col-md-9"><!--col-md-9 start -->
             <div class="box"><!--box start -->
-                <h1 align="center">Please Confirm Your Payment</h1>
-                <form action="confirm.php" method="post" enctype="multipart/form-data"><!--form start -->
-                    <div class="form-group"><!--form-group -->
-                        <label>Invoice No:</label>
-                        <input type="text" class="form-control" name="invoice_no" required>
-                    </div>
-                    <div class="form-group"><!--form-group -->
-                        <label>Invoice No:</label>
-                        <input type="text" class="form-control" name="invoice_no" required>
-                    </div>
-                    <div class="form-group"><!--form-group -->
-                        <label>Invoice No:</label>
-                        <input type="text" class="form-control" name="invoice_no" required>
-                    </div>
-                    <div class="form-group"><!--form-group -->
-                        <label>Invoice No:</label>
-                        <input type="text" class="form-control" name="invoice_no" required>
-                    </div>
-                    <div class="form-group"><!--form-group -->
-                        <label>Invoice No:</label>
-                        <input type="text" class="form-control" name="invoice_no" required>
-                    </div>
-                    <div class="text-center">
+                <?php
+                if(isset($_GET['my_orders'])){
+                    include ("my_orders.php");
+                }
 
-                        <button type="submit" name="confirm_payment" class="btn btn-primary btn-lg">
-                            <i class="fa fa-user-md"></i> Confirm Payment
-                        </button>
-                    </div>
-                </form>
+                if(isset($_GET['edit_account'])){
+                    include('edit_account.php');
+                }
+
+                if(isset($_GET['change_pass'])){
+                    include('change_pass.php');
+                }
+                if(isset($_GET['delete_account'])){
+                    include ('delete_account.php');
+                }
+
+                ?>
             </div>
         </div>
-
-
-
 
 
     </div>
@@ -165,3 +203,4 @@ include ('customer_includes/customer_footer.php');
 
 </html>
 
+<?php }?>

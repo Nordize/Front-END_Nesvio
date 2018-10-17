@@ -64,7 +64,7 @@ include ('functions/functions.php');
                     <?php
                     if(!isset($_SESSION['customer_username']))
                     {
-                        echo "<a href='login.php'>Login</a>";
+                        echo "<a href='checkout.php'>Login</a>";
                     }
                     else{
                         echo"<a href='logout.php'>Logout</a>";
@@ -173,7 +173,7 @@ include ('functions/functions.php');
             <?php
             if(!isset($_SESSION['customer_username']))
             {
-                include('login.php');
+                include('customer/customer_login.php');
             }else{
                 include ('payment_option.php');
             }

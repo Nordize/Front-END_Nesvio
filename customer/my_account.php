@@ -8,6 +8,14 @@
 
 session_start();
 
+if(!isset($_SESSION['customer_username']))
+{
+    echo "<script>window.open('../checkout.php','_self')</script>";
+}else{
+
+
+
+
 include ('__DIR__/../../includes/dblogin.php');
 include ('__DIR__/../functions/customer_function.php');
 
@@ -63,7 +71,7 @@ include ('__DIR__/../functions/customer_function.php');
                     <?php
                     if(!isset($_SESSION['customer_username']))
                     {
-                        echo "<a href='../login.php'>Login</a>";
+                        echo "<a href='../checkout.php'>Login</a>";
                     }
                     else{
                         echo"<a href='../logout.php'>Logout</a>";
@@ -119,7 +127,7 @@ include ('__DIR__/../functions/customer_function.php');
                     </li>
                 </ul>
             </div>
-            <a class="btn btn-primary navbar-btn right" href="cart.php"><!--btn btn-primary navbar-btn right start-->
+            <a class="btn btn-primary navbar-btn right" href="../cart.php"><!--btn btn-primary navbar-btn right start-->
                 <i class="fa fa-shopping-cart"></i>
                 <span><?php items_in_cart();?> items in cart</span>
             </a>
@@ -155,7 +163,7 @@ include ('__DIR__/../functions/customer_function.php');
         <div class="col-md-12"><!--col-md-12 start-->
             <ul class="breadcrumb"><!--breadcrumb start -->
                 <li>
-                    <a href="index.php">Home</a>
+                    <a href="../index.php">Home</a>
                 </li>
                 <li>
                     My Account
@@ -189,13 +197,6 @@ include ('__DIR__/../functions/customer_function.php');
         </div>
 
 
-
-
-
-
-
-
-
     </div>
 </div>
 
@@ -206,3 +207,4 @@ include ('customer_includes/customer_footer.php');
 
 </html>
 
+<?php }?>

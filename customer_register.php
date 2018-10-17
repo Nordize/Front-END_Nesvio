@@ -34,6 +34,12 @@ if(isset($_POST['Register']))
     //check if error array is empty, if yes process form data and insert record
     if(empty($form_errors)){
 
+        //define for image
+        $allowed_filetypes = array('.jpg','.gif','.bmp','.png'); // These will be the types of file that will pass the validation.
+        $max_filesize = 9999999999; // Maximum filesize in BYTES - SET IN to a low number for small files
+        //$upload_path = './uploads/'; // The place the files will be uploaded to (currently a 'files' directory).
+        $upload_path = './customer/customer_images/';
+
         //collect form data and store in variables
         $c_firstname = $_POST['c_firstname'];
         $c_lastname = $_POST['c_lastname'];
@@ -48,9 +54,30 @@ if(isset($_POST['Register']))
         $c_phone = $_POST['c_phone'];
         $c_image = $_FILES['c_image']['name'];
         $c_image_temp = $_FILES['c_image']['tmp_name'];
+        $ext = substr($c_image, strpos($c_image,'.'), strlen($c_image)-1); // Get the extension from the filename.
+
         $c_ip = getRealUserIp();
 
-        move_uploaded_file($c_image_temp,'customer/customer_images/$c_image');
+        // Check if the filetype is allowed, if not DIE and inform the user.
+        if(!in_array($ext,$allowed_filetypes))
+            $result = flashMessage('The file you attempted to upload is not allowed.');
+
+        // Now check the filesize, if it is too large then DIE and inform the user.
+        if(filesize($c_image_temp) > $max_filesize)
+            $result = flashMessage('The file you attempted to upload is too large.');
+
+        // Check if we can upload to the specified path, if not DIE and inform the user.
+        if(!is_writable($upload_path))
+            die('You cannot upload to the specified directory, please contact administrator.');
+
+        // Upload the file to your specified path.
+        if(move_uploaded_file($c_image_temp,$upload_path . $c_image))
+            //echo 'Your file upload was successful'; // It worked.
+            $result = flashMessage('Your file upload was successful');
+        else
+            $result = flashMessage('There was an error during the file upload. Please try again.'); // It failed
+
+        //move_uploaded_file($c_image_temp,'customer/customer_images/$c_image');
 
         if(checkDuplicateEntries('customer','customer_email',$c_email,$db_connect))
         {
@@ -170,7 +197,7 @@ if(isset($_POST['Register']))
                     <?php
                     if(!isset($_SESSION['customer_username']))
                     {
-                        echo "<a href='login.php'>Login</a>";
+                        echo "<a href='checkout.php'>Login</a>";
                     }
                     else{
                         echo"<a href='logout.php'>Logout</a>";
@@ -334,7 +361,7 @@ if(isset($_POST['Register']))
                         <input type="text" class="form-control" name="c_phone" required>
                     </div>
                     <div class="form-group"><!--form-group start -->
-                        <label>Your Image:</label>
+                        <label>Your Image:(.jpg/.gif/.bmp/.png Only)</label>
                         <input type="file" class="form-control" name="c_image" >
                     </div>
 

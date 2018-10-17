@@ -40,8 +40,7 @@ if(isset($_GET['pro_id']))
 }
 
 
-
-
+$average = 0; //use for rating
 
 
 ?>
@@ -61,6 +60,9 @@ if(isset($_GET['pro_id']))
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script scr="js/bootstrap.min.js"></script>
+
+    <script src="js/rating.js" type="text/javascript"></script>
+
 </head>
 
 <body>
@@ -95,7 +97,7 @@ if(isset($_GET['pro_id']))
                     <?php
                     if(!isset($_SESSION['customer_username']))
                     {
-                        echo "<a href='login.php'>Login</a>";
+                        echo "<a href='checkout.php'>Login</a>";
                     }
                     else{
                         echo"<a href='logout.php'>Logout</a>";
@@ -288,7 +290,6 @@ if(isset($_GET['pro_id']))
                                     </select>
                                 </div>
                             </div>
-
                             <p class="price">$<?php echo $pro_price; ?></p>
                             <p class="text-center buttons"><!--text-center buttons start -->
                                 <button class="btn btn-primary" type="submit">
@@ -339,13 +340,29 @@ if(isset($_GET['pro_id']))
                         <li>XX-Large</li>
                     </ul>
                 </p>
-
                 <hr>
-
             </div>
+
+
+
             <?php include ("includes/also_like.php")?>
 
+
+
         </div>
+        <div class="col-md-9" "><!--col-md-9 -->
+
+            <div class="box" id="comments"  style="width: 140%;><!--comment -->
+                <h4>Product Reviews</h4>
+                <p>Overall star of the product here</p>
+                <hr>
+                <?php include ('includes/product_review.php');?>
+
+            </div>
+
+        </div>
+
+
 
     </div>
 </div>

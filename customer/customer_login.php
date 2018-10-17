@@ -5,8 +5,8 @@
  * Date: 10/15/2018
  * Time: 9:42 PM
  */
-//include ('includes/dblogin.php');
-include ('resources/utilities.php');
+include ('__DIR__/../../includes/dblogin.php');
+include ('__DIR__/../../resources/utilities.php');
 
 
 if(isset($_POST['loginBtn']));
@@ -15,18 +15,24 @@ if(isset($_POST['loginBtn']));
     //array to hold error
     $form_errors = array();
 
-    //validate
-    $required_fields = array('username','password');
 
     if(empty($form_errors))
     {
+        error_reporting(~E_NOTICE);
+        //collect form data
         $customer_username = $_POST['username'];
         $customer_pass = $_POST['password'];
+        $get_ip = getRealUserIp();
 
         //check if user exist in the database
         $sqlQuery = "SELECT * FROM customer WHERE customer_username = :username";
         $statement = $db_connect->prepare($sqlQuery);
         $statement->execute(array(':username'=>$customer_username));
+
+        //check cart with IP
+        $select_cart = "SELECT COUNT(*) FROM cart WHERE ip_add='$get_ip'";
+        $run_cart = $db_connect->query($select_cart);
+        $check_cart = $run_cart->fetchColumn();
 
         while($row = $statement->fetch())
         {
@@ -35,21 +41,30 @@ if(isset($_POST['loginBtn']));
             $username = $row['customer_username'];
 
             //using PHP password varify function
-            if(password_verify($customer_pass,$hashed_password))  //if matched result is true
+            if(password_verify($customer_pass,$hashed_password) AND $check_cart ==0)  //if matched result is true
             {
-                $_SESSION['id'] = $id;
-                $_SESSION['username'] = $username;
-                redirectTo('index');
+                $_SESSION['customer_username'] = $username;
+
+                echo "<script>alert('You are Logged In')</script>";
+
+                echo"<script>window.open('customer/my_account.php?my_order','_self')</script>";
+
+                //redirectTo('../checkout.php');
             }
-            else
+            else if(password_verify($customer_pass,$hashed_password) AND $check_cart ==1)
+            {
+                $_SESSION['customer_username'] = $username;
+
+                echo "<script>alert('You are Logged In')</script>";
+
+                echo"<script>window.open('__DIR__/../checkout.php','_self')</script>";
+            }
+            else if(!password_verify($customer_pass,$hashed_password))
             {
                 $result = flashMessage("Invalid username or password");
             }
 
-
         }
-
-
 
 
     }else
@@ -79,7 +94,7 @@ if(isset($_POST['loginBtn']));
         </center>
         <?php if(isset($result)) echo $result;?>
         <?php if(!empty($form_errors)) echo show_errors($form_errors)?>
-        <form action="checkout.php" method="post"><!--form start -->
+        <form action="__DIR__/../checkout.php" method="post"><!--form start -->
             <div class="form-group"><!--form-group start -->
                 <label>Username:</label>
                 <input type="text" class="form-control" name="username" required>
@@ -100,7 +115,7 @@ if(isset($_POST['loginBtn']));
             </div>
         </form>
         <center><!--center start -->
-            <a href="customer_register.php">
+            <a href="../customer_register.php">
                 <h3>New customer? Please register here.</h3>
             </a>
         </center>
