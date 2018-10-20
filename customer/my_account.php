@@ -18,6 +18,7 @@ if(!isset($_SESSION['customer_username']))
 
 include ('__DIR__/../../includes/dblogin.php');
 include ('__DIR__/../functions/customer_function.php');
+include ('../resources/utilities.php');
 
 ?>
 
@@ -185,8 +186,8 @@ include ('__DIR__/../functions/customer_function.php');
                     include('edit_account.php');
                 }
 
-                if(isset($_GET['change_pass'])){
-                    include('change_pass.php');
+                if(isset($_GET['forgot_password'])){
+                    include('forgot_password.php');
                 }
                 if(isset($_GET['delete_account'])){
                     include ('delete_account.php');

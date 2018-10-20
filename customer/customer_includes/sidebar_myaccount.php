@@ -25,7 +25,7 @@ include_once ('__DIR__/../../includes/dblogin.php')
                 if ($run_query_pic->rowCount() > 0) {
                     while ($row_query_pic = $run_query_pic->fetch()) {
                         $user_pic = $row_query_pic['customer_image'];
-                        echo $user_pic;
+                        //echo $user_pic;
                         if(empty($user_pic))
                         {
 
@@ -70,8 +70,8 @@ include_once ('__DIR__/../../includes/dblogin.php')
             <li class="<?php if(isset($_GET['edit_account'])){echo "active";}?>">
                 <a href="my_account.php?edit_account"><i class="fa fa-pencil"></i>Edit Account</a>
             </li>
-            <li class="<?php if(isset($_GET['change_pass'])){echo "active";}?>">
-                <a href="my_account.php?change_pass"><i class="fa fa-user"></i>Change Password</a>
+            <li class="<?php if(isset($_GET['forgot_password'])){echo "active";}?>">
+                <a href="my_account.php?forgot_password"><i class="fa fa-user"></i>Forgot Password</a>
             </li>
             <li class="<?php if(isset($_GET['delete_account'])){echo "active";}?>">
                 <a href="my_account.php?delete_account"><i class="fa fa-trash-o"></i>Delete Account</a>

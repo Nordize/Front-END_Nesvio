@@ -6,7 +6,27 @@
  * Time: 5:30 PM
  */
 
+/**
+ * @param $required_field_array, n array containing the list of all required fields
+ * @return array, containing all errors
+ */
 
+function check_empty_fields($required_fields_array)
+{
+    //initialize an error to store error message
+
+    $form_errors = array();
+
+    //lop through the required fields array and popular the form error array
+    foreach($required_fields_array as $name_of_field)
+    {
+        if(!isset($_POST[$name_of_field]) || $_POST[$name_of_field] == NULL)
+        {
+            $form_errors[] = $name_of_field." is a required field";
+        }
+    }
+    return $form_errors;
+}
 /**
  * @param $fields_to_check_length, an array containing the name of fields
  * for which we want to check min require length e.g array ('username' =>4,'email' =>12)

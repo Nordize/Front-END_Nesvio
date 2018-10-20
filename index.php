@@ -62,7 +62,7 @@ include ('functions/functions.php');
                         <?php
                         if(!isset($_SESSION['customer_username']))
                         {
-                            echo "<a href='checkout.php'>Logine</a>";
+                            echo "<a href='checkout.php'>Login</a>";
 
                         }
                         else{

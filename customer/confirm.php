@@ -182,7 +182,7 @@ include ('functions/customer_function.php');
                 }
 
                 if(isset($_GET['change_pass'])){
-                    include('change_pass.php');
+                    include('forgot_password.php');
                 }
                 if(isset($_GET['delete_account'])){
                     include ('delete_account.php');
