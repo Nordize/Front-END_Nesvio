@@ -352,7 +352,7 @@ $average = 0; //use for rating
         </div>
         <div class="col-md-9" "><!--col-md-9 -->
 
-            <div class="box" id="comments"  style="width: 140%;><!--comment -->
+            <div class="box" id="comments"  style="width: 140%;"><!--comment -->
                 <h4>Product Reviews</h4>
                 <p>Overall star of the product here</p>
                 <hr>

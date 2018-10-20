@@ -7,7 +7,7 @@
  */
 
 #include ('__DIR__/../includes/dblogin.php');
-require_once '__DIR__/../includes/dblogin.php';
+require_once ('C:/xampp/htdocs/ecom_store/includes/dblogin.php');
 
 #get IP ADDRESS function start
 function getRealUserIp()

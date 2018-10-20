@@ -115,7 +115,7 @@ if(isset($_POST['loginBtn']));
             </div>
         </form>
         <center><!--center start -->
-            <a href="../customer_register.php">
+            <a href="__DIR__/../customer_register.php">
                 <h3>New customer? Please register here.</h3>
             </a>
         </center>

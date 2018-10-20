@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Created by PhpStorm.
@@ -6,10 +5,11 @@
  * Date: 10/16/2018
  * Time: 1:05 PM
  */
-
 include_once ('dblogin.php');
 
-$ratingDetails = "SELECT ratingNumber FROM item_rating";
+$product_id = $_GET['pro_id'];
+
+$ratingDetails = "SELECT ratingNumber FROM item_rating WHERE product_id = '$product_id' ";
 $rateResult = $db_connect->query($ratingDetails);
 
 $ratingNumber = 0;
@@ -49,7 +49,6 @@ if ($rateResult->rowCount() >0) {
         $average = $ratingNumber/$count;
     }
 }
-
 
 ?>
 <div id="ratingDetails">
@@ -162,9 +161,21 @@ if ($rateResult->rowCount() >0) {
                 <div class="pull-right" style="margin-left: 10px;"><?php echo $oneStarRating;?></div>
             </div>
         </div>
-        <div class="col-sm-3">
+        <!--Rate this product Button -->
+        <?php
+        if(isset($_SESSION['customer_username']))
+        {
+            echo"<div class='col-sm-3'>";
+            echo"<button type='button' id='rateProduct' class='btn btn-default'>Rate this product</button>";
+            echo "</div>";
+        }
+        else{
+            echo "Please Login for Rate this product";
+        }
+        ?>
+        <!--<div class="col-sm-3">
             <button type="button" id="rateProduct" class="btn btn-default">Rate this product</button>
-        </div>
+        </div>-->
     </div>
 
     <!-- review block start here-->
@@ -173,13 +184,15 @@ if ($rateResult->rowCount() >0) {
             <hr>
             <div class="review-block">
                 <?php
-                $ratingQuery = "SELECT * FROM item_rating";
+
+                $ratingQuery = "SELECT * FROM item_rating  WHERE product_id = '$product_id' ";
                 $run_ratingQuery = $db_connect->query($ratingQuery);
 
                 if ($run_ratingQuery->rowCount() >0)
                 {
                     while ($row_ratingQuery = $run_ratingQuery->fetch())
                     {
+                        $user_id = $row_ratingQuery['userId'];
                         $date = date_create($row_ratingQuery['created_time']);
                         $reviewDate = date_format($date, "M d, Y");
 
@@ -187,8 +200,34 @@ if ($rateResult->rowCount() >0) {
 
                         <div class="row">
                             <div class="col-sm-3">
-                                <img src="../customer/customer_images/demo_user.png" class="img-round">
-                                <div class="review-block-name">By <a href="#">demo user</a></div>
+                                <?php
+
+                                    $query_pic = "SELECT customer_username,customer_image FROM customer WHERE customer_id =".$user_id;
+
+                                    $run_query_pic = $db_connect->query($query_pic);
+
+                                    if ($run_query_pic->rowCount() > 0) {
+                                        while ($row_query_pic = $run_query_pic->fetch()) {
+                                            $user_pic = $row_query_pic['customer_image'];
+                                            $customer_username = $row_query_pic['customer_username'];
+                                            echo $user_pic;
+                                            if(empty($user_pic))
+                                            {
+
+                                                echo "<img src='__DIR__/../customer/customer_images/demo_user.png' class='img-responsive'>";
+                                                echo "<div class='review-block-name'>By <a href='__DIR__/../customer/my_account.php'>$customer_username</a></div>";
+                                            }
+                                            else{
+                                                $user_pic = $row_query_pic['customer_image'];
+                                                echo "<img src='__DIR__/../customer/customer_images/$user_pic' class='img-responsive'>";
+                                                echo "<div class='review-block-name'>By <a href='__DIR__/../customer/my_account.php'>$customer_username</a></div>";
+                                            }
+
+
+                                        }
+                                    }
+
+                                ?>
                                 <div class="review-block-date"><?php echo $reviewDate; ?></div>
                             </div>
                             <div class="col-sm-9">
@@ -223,11 +262,11 @@ if ($rateResult->rowCount() >0) {
 
 
 <div id="ratingSection" style="display: none;">
+
     <div class="row">
         <div class="col-sm-12">
-            <form id="ratingForm" method="post">
+            <form id="ratingForm" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <?php if(isset($result)) echo $result; ?>
                     <h4>Rate this product</h4>
                     <button type="button" class="btn btn-warning btn-sm rateButton" aria-label="Left Align">
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
@@ -245,7 +284,8 @@ if ($rateResult->rowCount() >0) {
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                     </button>
                     <input type="hidden" class="form-control" id="rating" name="rating" value="1">
-                    <input type="hidden" class="form-control" id="itemId" name="itemId" value="12345678">
+                    <input type="hidden" class="form-control" id="pro_id" name="pro_id" value="<?php echo $_GET['pro_id'];?>">
+
                 </div>
                 <div class="form-group">
                     <label for="usr">Title*</label>
@@ -256,7 +296,7 @@ if ($rateResult->rowCount() >0) {
                     <textarea class="form-control" rows="5" id="comment" name="comment" required></textarea>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-info" id="saveReview">Save Review</button>
+                    <button type="submit" class="btn btn-info" id="saveReview" name="submit">Save Review</button>
                     <button type="button" class="btn btn-info" id="cancelReview">Cancel</button>
                 </div>
 
