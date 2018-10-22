@@ -25,7 +25,283 @@ include ('functions/functions.php');
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script scr="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function(){
+
+        /// Hide And Show Code Starts ///
+
+            $('.nav-toggle').click(function(){
+
+                $(".panel-collapse,.collapse-data").slideToggle(700,function(){
+
+                    if($(this).css('display')=='none'){
+
+                        $(".hide-show").html('Show');
+
+                    }
+                    else{
+
+                        $(".hide-show").html('Hide');
+
+                    }
+
+                });
+
+            });
+
+            /// Hide And Show Code Ends ///
+
+            /// Search Filters code Starts ///
+
+            $(function(){
+
+                $.fn.extend({
+
+                    filterTable: function(){
+
+                        return this.each(function(){
+
+                            $(this).on('keyup', function(){
+
+                                var $this = $(this),
+
+                                    search = $this.val().toLowerCase(),
+
+                                    target = $this.attr('data-filters'),
+
+                                    handle = $(target),
+
+                                    rows = handle.find('li a');
+
+                                if(search == '') {
+
+                                    rows.show();
+
+                                } else {
+
+                                    rows.each(function(){
+
+                                        var $this = $(this);
+
+                                        $this.text().toLowerCase().indexOf(search) === -1 ? $this.hide() : $this.show();
+
+                                    });
+
+                                }
+
+                            });
+
+                        });
+
+                    }
+
+                });
+
+                $('[data-action="filter"][id="dev-table-filter"]').filterTable();
+
+            });
+
+            /// Search Filters code Ends ///
+
+        });
+
+
+
+    </script>
+
+
+    <script>
+
+
+        $(document).ready(function(){
+
+            // getProducts Function Code Starts
+
+            function getProducts(){
+
+                // Manufacturers Code Starts
+
+                var sPath = '';
+
+                var aInputs = $('li').find('.get_manufacturer');
+
+                var aKeys = Array();
+
+                var aValues = Array();
+
+                iKey = 0;
+
+                $.each(aInputs,function(key,oInput){
+
+                    if(oInput.checked){
+
+                        aKeys[iKey] =  oInput.value
+
+                    };
+
+                    iKey++;
+
+                });
+
+                if(aKeys.length>0){
+
+                    var sPath = '';
+
+                    for(var i = 0; i < aKeys.length; i++){
+
+                        sPath = sPath + 'man[]=' + aKeys[i]+'&';
+
+                    }
+
+                }
+
+                // Manufacturers Code ENDS
+
+                // Products Categories Code Starts
+
+                var aInputs = Array();
+
+                var aInputs = $('li').find('.get_p_cat');
+
+                var aKeys = Array();
+
+                var aValues = Array();
+
+                iKey = 0;
+
+                $.each(aInputs,function(key,oInput){
+
+                    if(oInput.checked){
+
+                        aKeys[iKey] =  oInput.value
+
+                    };
+
+                    iKey++;
+
+                });
+
+                if(aKeys.length>0){
+
+                    for(var i = 0; i < aKeys.length; i++){
+
+                        sPath = sPath + 'p_cat[]=' + aKeys[i]+'&';
+
+                    }
+
+                }
+
+                // Products Categories Code ENDS
+
+                // Categories Code Starts
+
+                var aInputs = Array();
+
+                var aInputs = $('li').find('.get_cat');
+
+                var aKeys  = Array();
+
+                var aValues = Array();
+
+                iKey = 0;
+
+                $.each(aInputs,function(key,oInput){
+
+                    if(oInput.checked){
+
+                        aKeys[iKey] =  oInput.value
+
+                    };
+
+                    iKey++;
+
+                });
+
+                if(aKeys.length>0){
+
+                    for(var i = 0; i < aKeys.length; i++){
+
+                        sPath = sPath + 'cat[]=' + aKeys[i]+'&';
+
+                    }
+
+                }
+
+                // Categories Code ENDS
+
+                // Loader Code Starts
+
+                $('#wait').html('<img src="images/load.gif">');
+
+                // Loader Code ENDS
+
+                // ajax Code Starts
+
+                $.ajax({
+
+                    url:"load.php",
+
+                    method:"POST",
+
+                    data: sPath+'sAction=getProducts',
+
+                    success:function(data){
+
+                        $('#Products').html('');
+
+                        $('#Products').html(data);
+
+                        $("#wait").empty();
+
+                    }
+
+                });
+
+                $.ajax({
+                    url:"load.php",
+                    method:"POST",
+                    data: sPath+'sAction=getPaginator',
+                    success:function(data){
+                        $('.pagination').html('');
+                        $('.pagination').html(data);
+                    }
+
+                });
+
+            // ajax Code Ends
+
+            }
+
+            // getProducts Function Code Ends
+
+            $('.get_manufacturer').click(function(){
+
+                getProducts();
+
+            });
+
+
+            $('.get_p_cat').click(function(){
+
+                getProducts();
+
+            });
+
+            $('.get_cat').click(function(){
+
+                getProducts();
+
+            });
+
+
+        });
+
+    </script>
+
 </head>
 
 <body>
@@ -127,21 +403,9 @@ include ('functions/functions.php');
                     <i class="fa fa-search"></i>
                 </button>
             </div>
-            <div class="collapse clearfix" id="search"> <!--collapse clearfix starts-->
-                <form class="navbar-form" method="get" action="results.php"><!--navbar-form start-->
-                    <button type="button" value="All" name="all" class="btn btn-primary" style="height: 33px;">
-                        All <!-- comeback to do the all category-->
-                        </button>
-                        <div class="input-group"><!--input-group start-->
-                        <input class="form-control" type="text" placeholder="Search" name="user_query" style="width: 995px" required>
-                        <span class="input-group-btn"><!--input-group-btn start-->
-                                <button type="submit" value="Search" name="search" class="btn btn-primary" style="height: 33px;">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-            </div>
-            </form>
-        </div>
+            <!-- search bar start here -->
+            <?php include ('includes/searchModule.php');?>
+            <!-- search bar end here -->
 
     </div>
 </div>
@@ -160,11 +424,13 @@ include ('functions/functions.php');
                 </li>
             </ul>
         </div> <!--col-md-12 end-->
+        <!--Sidebar here -->
+        <div class="col-md-3"><!-- col-md-3 Starts -->
 
-        <div class="col-md-3"><!-- col-md-3-->
-            <?php include ("includes/sidebar.php");?>
-        </div>
+            <?php include("includes/sidebar.php"); ?>
 
+        </div><!-- col-md-3 Ends -->
+        <!--Sidebar end -->
         <div class="col-md-9"><!-- col-md-9 start-->
             <?php
                 if(!isset($_GET['p_cat']))
@@ -181,121 +447,33 @@ include ('functions/functions.php');
                 }
             ?>
 
-            <div class="row"><!--row start -->
-                <?php
 
-                if(!isset($_GET['p_cat']))
-                {
+            <div class="row" id="Products" ><!-- row Starts -->
 
-                    if (!isset($_GET['cat']))
-                    {
-                        $per_page = 6;
-                        if(isset($_GET['page']))
-                        {
-                            $page = $_GET['page'];
-                        }else{
-                            $page=1;
-                        }
+                <?php getProducts(); ?>
 
-                        $start_from = ($page-1) * $per_page;
+            </div><!-- row Ends -->
 
-                        $get_products = "SELECT * FROM products ORDER BY 1 DESC LIMIT $start_from, $per_page";
+            <center><!-- center Starts -->
 
-                        $run_products = $db_connect->query($get_products);
+                <ul class="pagination" ><!-- pagination Starts -->
 
-                        if ($run_products->rowCount() >0) {
-                            while($row_products = $run_products->fetch())
-                            {
+                    <?php getPaginator(); ?>
 
-                                $pro_id = $row_products['product_id'];
-                                $pro_title = $row_products['product_title'];
-                                $pro_price = $row_products['product_price'];
-                                $pro_img1 = $row_products['product_img1'];
+                </ul><!-- pagination Ends -->
 
-                                $pro_price = sprintf('%.2f',$pro_price);
-
-                                echo "
-                                <div class='col-md-4 col-sm-6' center-responsive>
-                                    <div class='product'>
-                                        <a href='details.php?pro_id=$pro_id'>
-                                            <img src='admin_area/product_images/$pro_img1' class='img-responsive'>
-                                        
-                                        </a>
-                                        <div class='text'>
-                                            <h3><a href='details.php?pro_id=$pro_id'>$pro_title</a></h3>
-                                            <p class='price'>$ $pro_price</p>
-                                            <p class='buttons'>
-                                                <a href='details.php?pro_id=$pro_id' class='btn btn-default'>View Details</a>
-                                                <a href='details.php?pro_id=$pro_id' class='btn btn-primary'>
-                                                <i class='fa fa-shopping-cart'></i> Add to Cart
-                                                </a>
-                                            </p>
-                                        
-                                        </div>
-                                                                        
-                                    </div>
-                                </div>
-                                ";
-
-                            }
-                        }
-
-
-                ?>
-
-
-            </div>
-
-            <center><!--center start -->
-                <ul class="pagination"><!--pagination start -->
-                <?php
-
-                    $query = "SELECT COUNT(*) FROM products";
-                    $result = $db_connect->query($query);
-
-                    if ($result->rowCount() >0) {
-                        while($total_records = $result->fetchColumn()){
-                            $total_pages = ceil($total_records/$per_page);
-
-                            echo"
-                            <li><a href='shop.php?page=1'>".'First Page'."</a></li>
-                            ";
-
-                            for($i=1;$i<=$total_pages;$i++)
-                            {
-                                echo"
-                                <li><a href='shop.php?page=".$i."' > ".$i."</a> </li>
-                                ";
-
-                            };
-
-                            echo"
-                                <li><a href='shop.php?page=$total_pages'>".'Last Page'."</a></li>
-                            ";
+            </center><!-- center Ends -->
 
 
 
-                        }}
-                        }
-                    }
+        </div><!-- col-md-9 Ends --->
 
-                ?>
+        <div id="wait" style="position:absolute;top:40%;left:45%;padding:100px;padding-top:200px;"><!--- wait Starts -->
 
-                </ul><!--pagination end -->
-            </center>
+        </div><!--- wait Ends -->
 
-            <?php
-            get_p_cat_pro();
-            get_catpro()
-            ?>
-
-
-
-        </div>
-
-
-    </div> <!--container end-->
-</div> <!--content end-->
+    </div><!-- container Ends -->
+</div><!-- content Ends -->
 
 
 <!-- footer start here-->

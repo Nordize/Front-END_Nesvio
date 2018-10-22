@@ -25,7 +25,7 @@
 
         <li class="dropdown" ><!-- dropdown Starts -->
 
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" ><!-- dropdown-toggle Starts -->
+            <a href="" class="dropdown-toggle" data-toggle="dropdown" ><!-- dropdown-toggle Starts -->
 
                 <i class="fa fa-user" ></i>
 

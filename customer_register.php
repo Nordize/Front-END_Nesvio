@@ -124,7 +124,7 @@ if(isset($_POST['Register']))
                     $_SESSION['customer_username']=$c_username;
                     echo"<script>alert('You have been Registered Successfully')</script>";
 
-                    echo"<script>window.open('index.php','_self')</script>";
+                    echo"<script>window.open('admin_index.php','_self')</script>";
                 }
 
 

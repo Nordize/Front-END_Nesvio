@@ -17,7 +17,7 @@ if(isset($_POST['yes']))
     {
         session_destroy();
         echo "<script>alert('Your Account Has Been Deleted, Good Bye')</script>";
-        echo"<script>window.open('../index.php','_self')</script>";
+        echo"<script>window.open(admiadmin_index.phphp,'_self')</script>";
     }
 }
 else if(isset($_POST['no']))

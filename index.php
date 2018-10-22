@@ -26,6 +26,7 @@ include ('functions/functions.php');
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
 </head>
 
     <body>
@@ -130,22 +131,9 @@ include ('functions/functions.php');
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
-                <div class="collapse clearfix" id="search"> <!--collapse clearfix starts-->
-                    <form class="navbar-form" method="get" action="results.php"><!--navbar-form start-->
-                        <button type="button" value="All" name="all" class="btn btn-primary" style="height: 33px;">
-                            All <!-- comeback to do the all category -->
-                        </button>
-                        <div class="input-group"><!--input-group start-->
-                            <input class="form-control" type="text" placeholder="Search" name="user_query" style="width: 995px" required>
-                            <span class="input-group-btn"><!--input-group-btn start-->
-                                <button type="submit" value="Search" name="search" class="btn btn-primary" style="height: 33px;">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-
+                <!-- search bar start here -->
+                    <?php include ('includes/searchModule.php');?>
+                <!-- search bar end here -->
             </div>
         </div>
     </div>

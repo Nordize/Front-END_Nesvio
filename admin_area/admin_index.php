@@ -16,15 +16,14 @@
     <link href="css/admin_style.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
     <div id="wrapper"><!--wrapper start-->
+        <?php include ('admin_includes/admin_sidebar.php');?>
         <div id="page-wrapper"><!--page-wrapper start -->
-            <?php include ('admin_includes/admin_sidebar.php');?>
+
             <div class="container-fluid"><!--container-fluid -->
 
             </div>
