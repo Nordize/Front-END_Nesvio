@@ -34,6 +34,25 @@ function add_cart()
         $product_qty = $_POST['product_qty'];
         $product_size = $_POST['product_size'];
 
+        $get_price = "SELECT * FROM products WHERE product_id='$p_id'";
+        $run_price = $db_connect->query($get_price);
+        $row_price = $run_price->fetch();
+
+        $pro_price = $row_price['product_price'];
+        $pro_psp_price = $row_price['product_psp_price'];
+        $pro_label = $row_price['product_label'];
+
+        if($pro_label == "yes"){
+
+            $product_price = $pro_psp_price;
+
+        }
+        else if($pro_label == "no"){
+
+            $product_price = $pro_price;
+
+        }
+
         try{
             $query_cart = "INSERT INTO cart (p_id,ip_add,qty,p_size) VALUES ('$p_id','$ip_add','$product_qty','$product_size')";
 
@@ -41,11 +60,12 @@ function add_cart()
             $db_connect = null;
 
             echo"<script>window.open('details.php?pro_id=$p_id','_self')</script>";
-        }
-        catch(PDOException $e)
+        }catch(PDOException $e)
         {
             echo $query_cart . "<br>" . $e->getMessage();
         }
+
+
 
 
     }
@@ -135,8 +155,6 @@ function get_today_deal()
 
             $pro_psp_price = $row_products['product_psp_price'];
 
-            $pro_url = $row_products['product_url'];
-
             $pro_price = sprintf('%.2f',$pro_price);
             $pro_psp_price = sprintf('%.2f',$pro_psp_price);
 
@@ -150,7 +168,7 @@ function get_today_deal()
                 $product_label = "
                                     <div class='box_sale'>
                                         <div class='ribbon'><span>Sale</span>
-                                        <a href='$pro_url' >
+                                        <a href='details.php?pro_id=$pro_id' >
                                             
                                                 <img src='admin_area/product_images/$pro_img1' class='img-responsive' >
                                             
@@ -170,7 +188,7 @@ function get_today_deal()
 
                 $product_label = "
                                     <div class='box_sale'>
-                                        <a href='$pro_url' >
+                                        <a href='details.php?pro_id=$pro_id' >
                                             
                                                 <img src='admin_area/product_images/$pro_img1' class='img-responsive' >
                                             
@@ -200,15 +218,15 @@ function get_today_deal()
                                 
                                      <hr>
                                 
-                                    <h3><a href='$pro_url' >$pro_title</a></h3>
+                                    <h3><a href='details.php?pro_id=$pro_id' >$pro_title</a></h3>
                                 
                                     <p class='price' > $product_price $product_psp_price </p>
                                     
                                     <p class='buttons' >
                                     
-                                        <a href='$pro_url' class='btn btn-default' >View details</a>
+                                        <a href='details.php?pro_id=$pro_id' class='btn btn-default' >View details</a>
                                         
-                                        <a href='$pro_url' class='btn btn-primary'>
+                                        <a href='details.php?pro_id=$pro_id' class='btn btn-primary'>
                                     
                                             <i class='fa fa-shopping-cart'></i> Add to cart                         
                                         </a>
@@ -359,7 +377,7 @@ function getProducts(){
 
         $pro_psp_price = $row_products['product_psp_price'];
 
-        $pro_url = $row_products['product_url'];
+       // $pro_url = $row_products['product_url'];
 
 
         //if label is SALE
@@ -372,7 +390,7 @@ function getProducts(){
             $product_label = "
                                     <div class='box_sale'>
                                         <div class='ribbon'><span>Sale</span>
-                                        <a href='$pro_url' >
+                                        <a href='details.php?pro_id=$pro_id' >
                                             
                                                 <img src='admin_area/product_images/$pro_img1' class='img-responsive' >
                                             
@@ -392,7 +410,7 @@ function getProducts(){
 
             $product_label = "
                                     <div class='box_sale'>
-                                        <a href='$pro_url' >
+                                        <a href='details.php?pro_id=$pro_id' >
                                             
                                                 <img src='admin_area/product_images/$pro_img1' class='img-responsive' >
                                             
@@ -422,15 +440,15 @@ function getProducts(){
                                 
                                      <hr>
                                 
-                                    <h3><a href='$pro_url' >$pro_title</a></h3>
+                                    <h3><a href='details.php?pro_id=$pro_id' >$pro_title</a></h3>
                                 
                                     <p class='price' > $product_price $product_psp_price </p>
                                     
                                     <p class='buttons' >
                                     
-                                        <a href='$pro_url' class='btn btn-default' >View details</a>
+                                        <a href='details.php?pro_id=$pro_id' class='btn btn-default' >View details</a>
                                         
-                                        <a href='$pro_url' class='btn btn-primary'>
+                                        <a href='details.php?pro_id=$pro_id' class='btn btn-primary'>
                                     
                                             <i class='fa fa-shopping-cart'></i> Add to cart                         
                                         </a>

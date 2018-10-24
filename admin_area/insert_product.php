@@ -18,7 +18,6 @@ if(isset($_POST['submit']))
     $product_desc = $_POST['product_desc'];
     $product_keywords = $_POST['product_keywords'];
     $psp_price = $_POST['psp_price'];
-    $product_url = $_POST['product_url'];
     $product_label = $_POST['product_label'];
 
     $product_img1 = $_FILES['product_img1']['name'];
@@ -33,7 +32,7 @@ if(isset($_POST['submit']))
     move_uploaded_file($temp_name2,"product_images/$product_img2");
     move_uploaded_file($temp_name3,"product_images/$product_img3");
 
-    $insert_product = "INSERT INTO products (p_cat_id,cat_id,manufacturer_id,date,product_title,product_url,product_img1,product_img2,product_img3,product_price,product_psp_price,product_desc,product_keywords,product_label) VALUES ('$product_cat','$cat','$manufacturer_id',NOW(),'$product_title','$product_url','$product_img1','$product_img2','$product_img3','$product_price','$psp_price','$product_desc','$product_keywords','$product_label')";
+    $insert_product = "INSERT INTO products (p_cat_id,cat_id,manufacturer_id,date,product_title,product_img1,product_img2,product_img3,product_price,product_psp_price,product_desc,product_keywords,product_label) VALUES ('$product_cat','$cat','$manufacturer_id',NOW(),'$product_title','$product_img1','$product_img2','$product_img3','$product_price','$psp_price','$product_desc','$product_keywords','$product_label')";
 
     $run_product = $db_connect->query($insert_product);
 
@@ -91,19 +90,7 @@ if(isset($_POST['submit']))
                                 <input type="text" name="product_title" class="form-control" required>
                             </div>
                         </div><!-- form-group end-->
-                        <div class="form-group"><!-- form-group start-->
-                            <label class="col-md-3 control-label"> Product Url</label>
-                            <div class="col-md-6">
-                                <input type="text" name="product_title" class="form-control" required>
-                                <br>
 
-                                <p style="font-size:15px; font-weight:bold;">
-
-                                    Product Url Example : navy-blue-t-shirt
-
-                                </p>
-                            </div>
-                        </div><!-- form-group end-->
 
                         <div class="form-group" ><!-- form-group Starts -->
                             <label class="col-md-3 control-label" > Select A Manufacturer </label>

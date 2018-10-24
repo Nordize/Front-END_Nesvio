@@ -185,16 +185,6 @@ include("functions/functions.php");
                     </li>
 
                     <li>
-                        <a href="about.php"> About Us </a>
-                    </li>
-
-                    <li>
-
-                        <a href="services.php"> Services </a>
-
-                    </li>
-
-                    <li>
                         <a href="contact.php"> Contact Us </a>
                     </li>
 
@@ -323,7 +313,7 @@ include("functions/functions.php");
                                 $product_label = "
                                     <div class='box_sale'>
                                         <div class='ribbon'><span>Sale</span>
-                                        <a href='$pro_url' >
+                                        <a href='details.php?pro_id=$pro_id' >
                                             
                                                 <img src='admin_area/product_images/$pro_img1' class='img-responsive' >
                                             
@@ -343,7 +333,7 @@ include("functions/functions.php");
 
                                 $product_label = "
                                     <div class='box_sale'>
-                                        <a href='$pro_url' >
+                                        <a href='details.php?pro_id=$pro_id' >
                                             
                                                 <img src='admin_area/product_images/$pro_img1' class='img-responsive' >
                                             
@@ -373,15 +363,15 @@ include("functions/functions.php");
                                 
                                      <hr>
                                 
-                                    <h3><a href='$pro_url' >$pro_title</a></h3>
+                                    <h3><a href='details.php?pro_id=$pro_id' >$pro_title</a></h3>
                                 
                                     <p class='price' > $product_price $product_psp_price </p>
                                     
                                     <p class='buttons' >
                                     
-                                        <a href='$pro_url' class='btn btn-default' >View details</a>
+                                        <a href='details.php?pro_id=$pro_id' class='btn btn-default' >View details</a>
                                         
-                                        <a href='$pro_url' class='btn btn-primary'>
+                                        <a href='details.php?pro_id=$pro_id' class='btn btn-primary'>
                                     
                                             <i class='fa fa-shopping-cart'></i> Add to cart                         
                                         </a>

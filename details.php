@@ -5,21 +5,15 @@
  * Date: 9/29/2018
  * Time: 6:50 PM
  */
-
-
 session_start();
 include ('includes/dblogin.php');
 include ('functions/functions.php');
-
 if(isset($_GET['pro_id']))
 {
     $product_id = $_GET['pro_id'];
     $get_product = "SELECT * FROM products WHERE product_id = '$product_id'";
-
     $run_product = $db_connect->query($get_product);
-
     $row_product = $run_product->fetch(PDO::FETCH_BOTH);
-
     $p_cat_id = $row_product['p_cat_id'];
     $pro_title = $row_product['product_title'];
     $pro_price = $row_product['product_price'];
@@ -27,22 +21,22 @@ if(isset($_GET['pro_id']))
     $pro_img1 = $row_product['product_img1'];
     $pro_img2 = $row_product['product_img2'];
     $pro_img3 = $row_product['product_img3'];
+    $pro_label = $row_product['product_label'];
+    $pro_psp_price = $row_product['product_psp_price'];
+
+    $pro_price = sprintf('%.2f',$pro_price);
+    $pro_psp_price = sprintf('%.2f',$pro_psp_price);
+
+
+
+
 
     $get_p_cat = "SELECT * FROM product_categories WHERE p_cat_id = '$p_cat_id'";
-
     $run_p_cat = $db_connect->query($get_p_cat);
-
     $row_p_cat = $run_p_cat->fetch(PDO::FETCH_BOTH);
-
     $p_cat_title = $row_p_cat['p_cat_title'];
-
-
 }
-
-
 $average = 0; //use for rating
-
-
 ?>
 
 <html>
@@ -59,7 +53,7 @@ $average = 0; //use for rating
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script scr="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
     <script src="js/rating.js" type="text/javascript"></script>
 
@@ -219,6 +213,7 @@ $average = 0; //use for rating
                                 <li data-target="#myCarousel" data-slide-to="2"></li>
                             </ol>
                             <div class="carousel-inner"><!-- carousel-inner-->
+
                                 <div class="item active">
                                     <center>
                                         <img src="admin_area/product_images/<?php echo $pro_img1; ?>" class="img-responsive">
@@ -290,7 +285,38 @@ $average = 0; //use for rating
                                     </select>
                                 </div>
                             </div>
-                            <p class="price">$<?php echo $pro_price; ?></p>
+
+
+                            <?php if($pro_label == "yes"){
+
+                                    echo "
+
+                                    <p class='price'>
+                                    
+                                    <del> $$pro_price </del><br>
+                                    
+                                    Sale Price: $$pro_psp_price
+                                    
+                                    </p>
+                                    
+                                    ";
+
+
+                                }
+                                else if($pro_label == "no"){
+
+                                    echo "
+
+                                    <p class='price'>
+                                    
+                                   $$pro_price 
+                                                                   
+                                    </p>
+                                    
+                                    ";
+
+
+                                } ?>
                             <p class="text-center buttons"><!--text-center buttons start -->
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fa fa-shopping-cart"></i>Add to Cart
@@ -329,16 +355,16 @@ $average = 0; //use for rating
 
             <div class="box" id="details"><!--box start -->
                 <p><!--p start-->
-                    <h4>Product details</h4>
-                    <p><?php echo $pro_desc; ?></p>
-                    <h4>Size</h4>
-                    <ul>
-                        <li>Small</li>
-                        <li>Medium</li>
-                        <li>Large</li>
-                        <li>X-Large</li>
-                        <li>XX-Large</li>
-                    </ul>
+                <h4>Product details</h4>
+                <p><?php echo $pro_desc; ?></p>
+                <h4>Size</h4>
+                <ul>
+                    <li>Small</li>
+                    <li>Medium</li>
+                    <li>Large</li>
+                    <li>X-Large</li>
+                    <li>XX-Large</li>
+                </ul>
                 </p>
                 <hr>
             </div>
@@ -346,35 +372,22 @@ $average = 0; //use for rating
 
 
             <?php include ("includes/also_like.php")?>
-
-
-
         </div>
         <div class="col-md-9" "><!--col-md-9 -->
-
-            <div class="box" id="comments"  style="width: 140%;"><!--comment -->
-                <h4>Product Reviews</h4>
-                <p>Overall star of the product here</p>
-                <hr>
-                <?php include ('includes/product_review.php');?>
-
-            </div>
-
+        <div class="box" id="comments"  style="width: 140%;"><!--comment -->
+            <h4>Product Reviews</h4>
+            <p>Overall star of the product here</p>
+            <hr>
+            <?php include ('includes/product_review.php');?>
         </div>
-
-
-
     </div>
 </div>
+</div>
 <!-- end of left side navigator bar -->
-
-
-
 <!-- end of product details -->
 <!-- footer start here-->
 <?php
 include ('includes/footer.php');
 ?>
-
 </body>
 </html>
