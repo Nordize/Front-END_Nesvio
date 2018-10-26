@@ -26,7 +26,31 @@ include ('functions/functions.php');
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script scr="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        //script for update quantity of the product in shopping cart
+        $(document).ready(function(data){
+            $(document).on('keyup', '.quantity', function(){
+                var id = $(this).data("product_id");
+                var quantity = $(this).val();
+                if(quantity  != ''){
+                    $.ajax({
+                        url:"includes/change_qty.php",
+                        method:"POST",
+                        data:{id:id, quantity:quantity},
+                        success:function(data){
+                            $("body").load('show_shopping_cart.php');
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+
+
+
 </head>
 
 <body>

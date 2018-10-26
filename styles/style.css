@@ -359,6 +359,17 @@ Details styles
     height: 350px;
 }
 
+/*
+Shipping styles
+ */
+/*.shipping-header
+{
+    background: #e5e5e5;
+    padding: 3px;
+    margin-left: -7px;
+    margin-right: -7px;
+}
+*/
 
 /*
 Cart page Styles

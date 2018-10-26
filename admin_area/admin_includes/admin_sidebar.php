@@ -232,7 +232,7 @@
 
                 <a href="#" data-toggle="collapse" data-target="#shipment">
 
-                    <i class="fa fa-fw fa-gear"></i> Shipment Options
+                    <i class="fa fa-fw fa-truck"></i> Shipment Options
 
                     <i class="fa fa-fw fa-caret-down"></i>
 

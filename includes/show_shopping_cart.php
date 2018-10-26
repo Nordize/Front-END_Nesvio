@@ -8,6 +8,7 @@
 
 
 $total = 0;
+
 global $db_connect;
 
 $ip_add = getRealUserIp();
@@ -30,13 +31,32 @@ if ($run_items_in_cart->rowCount() > 0) {
                 $product_id = $row_products['product_id'];
                 $product_title = $row_products['product_title'];
                 $product_img1 = $row_products['product_img1'];
-                $only_price = $row_products['product_price'];
-                $sub_total = $row_products['product_price'] * $pro_qty;
+                $pro_psp_price = $row_products['product_psp_price'];
+                $pro_label = $row_products['product_label'];
 
-                $only_price = sprintf('%.2f',$only_price);
+                $only_price = $row_products['product_price'];
+
+
+                $_SESSION['pro_qty'] = $pro_qty;
+
+                if($pro_label == "yes"){
+
+                    $product_price = $pro_psp_price;
+                    $sub_total = $product_price * $pro_qty;
+
+                }
+                else if($pro_label == "no"){
+
+                    $product_price = $only_price;
+                    $sub_total = $product_price * $pro_qty;
+
+                }
+
+                $product_price = sprintf('%.2f',$product_price);
                 $sub_total = sprintf('%.2f',$sub_total);
 
-                $total += $sub_total;
+                $product_price += $sub_total;
+
 
                 echo "
                     <tbody><!--tbody start -->
@@ -47,13 +67,26 @@ if ($run_items_in_cart->rowCount() > 0) {
                         <td>
                             <a href='details.php?pro_id=$product_id'>$product_title</a>
                         </td>
+                       
                         <td>
-                            $pro_qty
+                            <input type='text' name='quantity' value='$_SESSION[pro_qty]' data-product_id='$product_id' class='quantity form-control' style='width: 60px;'>
                         </td>
-                        <td>
-                            $$only_price
-                        </td>
-                        <td>
+                       ";?>
+                        <?php
+                        if($pro_label == "yes"){
+
+                               echo" <td>
+                                        $$pro_psp_price
+                                    </td>";
+                            }
+                            else if($pro_label == "no"){
+
+                                echo "<td>
+                                        $$only_price
+                                     </td>";
+                        }
+                        ?>
+                        <?php echo"<td>
                             $pro_size
                         </td>
                         <td>

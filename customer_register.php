@@ -107,6 +107,9 @@ if(isset($_POST['Register']))
                     $result = "<p style='padding:20px; border: 1px solid gray; color: green;'> Registration Successful</p>";
                 }
 
+
+
+
                 #check when have some item on cart
                 $sel_cart = "SELECT COUNT(*) FROM cart WHERE ip_add='$c_ip'";
 
@@ -161,7 +164,7 @@ if(isset($_POST['Register']))
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script scr="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </head>
 
 <body>

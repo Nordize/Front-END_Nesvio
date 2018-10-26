@@ -38,21 +38,6 @@ function add_cart()
         $run_price = $db_connect->query($get_price);
         $row_price = $run_price->fetch();
 
-        $pro_price = $row_price['product_price'];
-        $pro_psp_price = $row_price['product_psp_price'];
-        $pro_label = $row_price['product_label'];
-
-        if($pro_label == "yes"){
-
-            $product_price = $pro_psp_price;
-
-        }
-        else if($pro_label == "no"){
-
-            $product_price = $pro_price;
-
-        }
-
         try{
             $query_cart = "INSERT INTO cart (p_id,ip_add,qty,p_size) VALUES ('$p_id','$ip_add','$product_qty','$product_size')";
 
@@ -251,21 +236,27 @@ function update_cart()
 
     if(isset($_POST['update']))
     {
-        foreach ($_POST['remove'] as $remove_id)
+        if(isset($_POST['remove']))
         {
-            $delete_product = "DELETE FROM cart WHERE p_id ='$remove_id'";
-
-            $run_delete = $db_connect->query($delete_product);
-
-            if($run_delete)
+            foreach ($_POST['remove'] as $remove_id)
             {
-                echo"<script>window.open('cart.php','_self')</script>";
+                $delete_product = "DELETE FROM cart WHERE p_id ='$remove_id'";
+
+                $run_delete = $db_connect->query($delete_product);
+
+                if($run_delete)
+                {
+                    echo"<script>window.open('cart.php','_self')</script>";
+                }
             }
         }
+
     }
 
-   # echo @$up_cart = update_cart();
 }
+echo @$up_cart = update_cart();
+
+
 
 
 function getProducts(){
