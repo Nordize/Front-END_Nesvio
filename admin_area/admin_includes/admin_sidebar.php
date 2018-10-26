@@ -228,6 +228,31 @@
                 </ul>
 
             </li><!-- li Ends -->
+            <li><!-- li Starts -->
+
+                <a href="#" data-toggle="collapse" data-target="#shipment">
+
+                    <i class="fa fa-fw fa-gear"></i> Shipment Options
+
+                    <i class="fa fa-fw fa-caret-down"></i>
+
+
+                </a>
+
+                <ul id="shipment" class="collapse">
+
+                    <li>
+                        <a href="index.php?insert_slide"> Insert Shipment Option </a>
+                    </li>
+
+                    <li>
+                        <a href="index.php?view_slides"> View Shipment Options </a>
+                    </li>
+
+
+                </ul>
+
+            </li><!-- li Ends -->
 
             <li>
 

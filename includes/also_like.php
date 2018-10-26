@@ -92,7 +92,7 @@
                                     
                                         $product_label
                                     
-                                    <div class='text' style='padding: 55px 10px 10px;'>
+                                    <div class='text' >
                                 
                                     <center>
                                     

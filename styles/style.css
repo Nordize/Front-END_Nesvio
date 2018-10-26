@@ -522,6 +522,7 @@ Footer Styles
 .box_sale {
     /*width: 200px; height: 300px;*/
     width: inherit; height: 200px;
+    margin-bottom: 50px;
     position: relative;
 
 }

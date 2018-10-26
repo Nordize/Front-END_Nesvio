@@ -130,8 +130,8 @@ Header styles
 }
 
 #search{
-    clear: both;
-    border-top: solid 1px #9adacd;
+    /*clear: both; */
+    border-bottom: solid 1px #9adacd;
     text-align: right;
 }
 

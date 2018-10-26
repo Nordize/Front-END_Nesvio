@@ -286,7 +286,6 @@ include("functions/functions.php");
                             $manufacturer_id = $row_products['manufacturer_id'];
                             $pro_psp_price = $row_products['product_psp_price'];
                             $product_label = $row_products['product_label'];
-                            $pro_url = $row_products['product_url'];
 
                             $pro_price = sprintf('%.2f',$pro_price);
                             $pro_psp_price = sprintf('%.2f',$pro_psp_price);

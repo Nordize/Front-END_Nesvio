@@ -7,18 +7,6 @@
  */
 include ('admin_includes/dblogin.php');
 
-if(isset($_GET['delete_manufacturer'])){
-
-    include("delete_manufacturer.php");
-
-}
-
-if(isset($_GET['edit_manufacturer'])){
-
-    include("edit_manufacturer.php");
-
-}
-
 
 ?>
 

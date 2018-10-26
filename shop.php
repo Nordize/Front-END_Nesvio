@@ -358,15 +358,17 @@ include ('functions/functions.php');
                 <img src="images/EiShops_resize.png" alt="E-commerce Logo" class="hidden-xs" style="margin-top: 5px;">
                 <img src="images/EiShops_resize.png" alt="E-commerce Logo" class="visible-xs" style="margin-top: 5px;">
             </a>
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
-                <span class="sr-only">Toggle Navigation</span>
-                <i class="fa fa-align-justify"></i>
-            </button>
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
-                <span class="sr-only">Toggle Search</span>
-                <i class="fa fa-search"></i>
-            </button>
         </div>
+        <!-- search bar start here -->
+        <?php include ('includes/searchModule.php');?>
+        <!-- search bar end here -->
+
+        <a class="btn btn-primary navbar-btn right" style="margin-right: 15px;" href="cart.php"><!--btn btn-primary navbar-btn right start-->
+            <i class="fa fa-shopping-cart"></i>
+            <span><?php items_in_cart();?> items in cart</span>
+        </a>
+
+
         <div class="navbar-collapse collapse" id="navigation"> <!--navbar-collapse collapse Starts-->
             <div class="padding-nav"> <!--padding-nav Starts-->
                 <ul class="nav navbar-nav navbar-left"><!-- nav navbar-nav navbar-left start-->
@@ -393,23 +395,19 @@ include ('functions/functions.php');
                     </li>
                 </ul>
             </div>
-            <a class="btn btn-primary navbar-btn right" href="cart.php"><!--btn btn-primary navbar-btn right start-->
-                <i class="fa fa-shopping-cart"></i>
-                <span><?php items_in_cart();?> items in cart</span>
-            </a>
-            <div class="navbar-collapse collapse right"><!--navbar-collapse collapse right start-->
-                <button class="btn navbar-btn btn-primary" type="button" data-toggle="collapse" data-target="#search" style="height: 33px;">
+
+            <!-- <div class="navbar-collapse collapse right"><!--navbar-collapse collapse right start-->
+            <!--    <button class="btn navbar-btn btn-primary" type="button" data-toggle="collapse" data-target="#search" style="height: 33px;">
                     <span class="sr-only">Toggle Search</span>
                     <i class="fa fa-search"></i>
                 </button>
-            </div>
-            <!-- search bar start here -->
-            <?php include ('includes/searchModule.php');?>
-            <!-- search bar end here -->
+            </div>-->
+
+        </div>
 
     </div>
 </div>
-</div>
+
 <!--End of Navigator bar-->
 
 <div id="content"><!--content start -->
