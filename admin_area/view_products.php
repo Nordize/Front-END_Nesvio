@@ -90,6 +90,7 @@ if(isset($_GET['delete_product'])){
                                 <th>Product ID</th>
                                 <th>Product Title</th>
                                 <th>Product Image</th>
+                                <th>Product Weight (lb.)</th>
                                 <th>Product Price</th>
                                 <th>Product Label (Sale ot not)</th>
                                 <th>Product Sale Price</th>
@@ -129,6 +130,8 @@ if(isset($_GET['delete_product'])){
 
                                 $pro_label = $row_pro['product_label'];
 
+                                $pro_weight = $row_pro['product_weight'];
+
                                 $pro_keywords = $row_pro['product_keywords'];
 
                                 $pro_date = $row_pro['date'];
@@ -144,6 +147,8 @@ if(isset($_GET['delete_product'])){
                                     <td><?php echo $pro_title; ?></td>
 
                                     <td><img src="product_images/<?php echo $pro_image; ?>" width="60" height="60"></td>
+
+                                    <td><?php echo $pro_weight; ?></td>
 
                                     <td>$ <?php echo $pro_price; ?></td>
 

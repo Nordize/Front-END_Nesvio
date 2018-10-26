@@ -19,6 +19,7 @@ if(isset($_POST['submit']))
     $product_keywords = $_POST['product_keywords'];
     $psp_price = $_POST['psp_price'];
     $product_label = $_POST['product_label'];
+    $product_weight = $_POST['product_weight'];
 
     $product_img1 = $_FILES['product_img1']['name'];
     $product_img2 = $_FILES['product_img2']['name'];
@@ -32,7 +33,7 @@ if(isset($_POST['submit']))
     move_uploaded_file($temp_name2,"product_images/$product_img2");
     move_uploaded_file($temp_name3,"product_images/$product_img3");
 
-    $insert_product = "INSERT INTO products (p_cat_id,cat_id,manufacturer_id,date,product_title,product_img1,product_img2,product_img3,product_price,product_psp_price,product_desc,product_keywords,product_label) VALUES ('$product_cat','$cat','$manufacturer_id',NOW(),'$product_title','$product_img1','$product_img2','$product_img3','$product_price','$psp_price','$product_desc','$product_keywords','$product_label')";
+    $insert_product = "INSERT INTO products (p_cat_id,cat_id,manufacturer_id,date,product_title,product_img1,product_img2,product_img3,product_price,product_psp_price,product_desc,product_weight,product_keywords,product_label) VALUES ('$product_cat','$cat','$manufacturer_id',NOW(),'$product_title','$product_img1','$product_img2','$product_img3','$product_price','$psp_price','$product_desc','$product_weight','$product_keywords','$product_label')";
 
     $run_product = $db_connect->query($insert_product);
 
@@ -181,6 +182,12 @@ if(isset($_POST['submit']))
                             <label class="col-md-3 control-label"> Product Imgage3</label>
                             <div class="col-md-6">
                                 <input type="file" name="product_img3" class="form-control" required>
+                            </div>
+                        </div><!-- form-group end-->
+                        <div class="form-group"><!-- form-group start-->
+                            <label class="col-md-3 control-label"> Product Weight (lb.)</label>
+                            <div class="col-md-6">
+                                <input type="text" name="product_weight" class="form-control" >
                             </div>
                         </div><!-- form-group end-->
                         <div class="form-group"><!-- form-group start-->

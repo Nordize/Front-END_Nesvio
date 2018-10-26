@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e9b0e16-d1df-48e6-80fd-0d6b1efd6858" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/includes/change_qty.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_area/admin_includes/admin_sidebar.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin_area/admin_includes/admin_sidebar.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/cart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer_register.php" beforeDir="false" afterPath="$PROJECT_DIR$/customer_register.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/show_order_summary.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/show_order_summary.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/show_shopping_cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/show_shopping_cart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_area/insert_product.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin_area/insert_product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_area/view_products.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin_area/view_products.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,11 +32,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show_order_summary.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="show_order_summary.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/includes/show_order_summary.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="389">
               <caret line="101" column="38" lean-forward="true" selection-start-line="101" selection-start-column="38" selection-end-line="101" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="insert_product.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/admin_area/insert_product.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="190" column="34" lean-forward="true" selection-start-line="190" selection-start-column="34" selection-end-line="190" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -142,7 +144,6 @@
         <option value="$PROJECT_DIR$/load.php" />
         <option value="$PROJECT_DIR$/includes/sidebar.php" />
         <option value="$PROJECT_DIR$/details.php" />
-        <option value="$PROJECT_DIR$/admin_area/insert_product.php" />
         <option value="$PROJECT_DIR$/admin_area/insert_manufacturer.php" />
         <option value="$PROJECT_DIR$/admin_area/view_manufacturers.php" />
         <option value="$PROJECT_DIR$/admin_area/edit_manufacturer.php" />
@@ -157,7 +158,6 @@
         <option value="$PROJECT_DIR$/customer/my_account.php" />
         <option value="$PROJECT_DIR$/includes/also_like.php" />
         <option value="$PROJECT_DIR$/admin_area/edit_product.php" />
-        <option value="$PROJECT_DIR$/admin_area/view_products.php" />
         <option value="$PROJECT_DIR$/admin_area/admin_index.php" />
         <option value="$PROJECT_DIR$/includes/change_qty.php" />
         <option value="$PROJECT_DIR$/admin_area/admin_includes/admin_sidebar.php" />
@@ -167,6 +167,8 @@
         <option value="$PROJECT_DIR$/cart.php" />
         <option value="$PROJECT_DIR$/customer_register.php" />
         <option value="$PROJECT_DIR$/includes/show_order_summary.php" />
+        <option value="$PROJECT_DIR$/admin_area/view_products.php" />
+        <option value="$PROJECT_DIR$/admin_area/insert_product.php" />
       </list>
     </option>
   </component>
@@ -197,6 +199,11 @@
             <path>
               <item name="ecom_store" type="b2602c69:ProjectViewProjectNode" />
               <item name="ecom_store" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ecom_store" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ecom_store" type="462c0819:PsiDirectoryNode" />
+              <item name="admin_area" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ecom_store" type="b2602c69:ProjectViewProjectNode" />
@@ -286,12 +293,12 @@
       <workItem from="1540313391927" duration="1286000" />
       <workItem from="1540416869314" duration="6199000" />
       <workItem from="1540517339590" duration="11455000" />
-      <workItem from="1540573546328" duration="7224000" />
+      <workItem from="1540573546328" duration="7654000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244200000" />
+    <option name="totallyTimeSpent" value="244630000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -592,13 +599,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_area/insert_product.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="36" column="55" lean-forward="true" selection-start-line="36" selection-start-column="55" selection-end-line="36" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin_area/edit_manufacturer.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -610,13 +610,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
           <caret line="329" lean-forward="true" selection-start-line="329" selection-end-line="329" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin_area/view_products.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="151" column="76" selection-start-line="151" selection-start-column="76" selection-end-line="151" selection-end-column="76" />
         </state>
       </provider>
     </entry>
@@ -696,10 +689,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/admin_area/view_products.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="90" column="50" selection-start-line="90" selection-start-column="50" selection-end-line="90" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/includes/show_order_summary.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="389">
           <caret line="101" column="38" lean-forward="true" selection-start-line="101" selection-start-column="38" selection-end-line="101" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_area/insert_product.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="190" column="34" lean-forward="true" selection-start-line="190" selection-start-column="34" selection-end-line="190" selection-end-column="34" />
         </state>
       </provider>
     </entry>
