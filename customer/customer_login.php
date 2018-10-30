@@ -18,54 +18,59 @@ if(isset($_POST['loginBtn']));
 
     if(empty($form_errors))
     {
-        error_reporting(~E_NOTICE);
         //collect form data
-        $customer_username = $_POST['username'];
-        $customer_pass = $_POST['password'];
-        $get_ip = getRealUserIp();
-
-        //check if user exist in the database
-        $sqlQuery = "SELECT * FROM customer WHERE customer_username = :username";
-        $statement = $db_connect->prepare($sqlQuery);
-        $statement->execute(array(':username'=>$customer_username));
-
-        //check cart with IP
-        $select_cart = "SELECT COUNT(*) FROM cart WHERE ip_add='$get_ip'";
-        $run_cart = $db_connect->query($select_cart);
-        $check_cart = $run_cart->fetchColumn();
-
-        while($row = $statement->fetch())
+        if(isset($_POST['username']) && isset($_POST['password']))
         {
-            $id = $row['customer_id'];
-            $hashed_password = $row['customer_pass'];
-            $username = $row['customer_username'];
+            $customer_username = $_POST['username'];
+            $customer_pass = $_POST['password'];
 
-            //using PHP password varify function
-            if(password_verify($customer_pass,$hashed_password) AND $check_cart ==0)  //if matched result is true
+            $get_ip = getRealUserIp();
+
+            //check if user exist in the database
+            $sqlQuery = "SELECT * FROM customer WHERE customer_username = :username";
+            $statement = $db_connect->prepare($sqlQuery);
+            $statement->execute(array(':username'=>$customer_username));
+
+            //check cart with IP
+            $select_cart = "SELECT COUNT(*) FROM cart WHERE ip_add='$get_ip'";
+            $run_cart = $db_connect->query($select_cart);
+            $check_cart = $run_cart->fetchColumn();
+
+            while($row = $statement->fetch())
             {
-                $_SESSION['customer_username'] = $username;
+                $id = $row['customer_id'];
+                $hashed_password = $row['customer_pass'];
+                $username = $row['customer_username'];
 
-                echo "<script>alert('You are Logged In')</script>";
 
-                echo"<script>window.open('customer/my_account.php?my_order','_self')</script>";
+                //using PHP password varify function
+                if(password_verify($customer_pass,$hashed_password) AND $check_cart ==0)  //if matched result is true
+                {
+                    $_SESSION['customer_username'] = $username;
 
-                //redirectTo('../checkout.php');
+                    echo "<script>alert('You are Logged In')</script>";
+
+                    echo"<script>window.open('customer/my_account.php?my_order','_self')</script>";
+
+                    //redirectTo('../checkout.php');
+                }
+                else if(password_verify($customer_pass,$hashed_password) AND $check_cart >=1)
+                {
+                    $_SESSION['customer_username'] = $username;
+
+                    echo "<script>alert('You are Logged In')</script>";
+
+                    echo"<script>window.open('__DIR__/../cart.php','_self')</script>";
+                }
+                else if(!password_verify($customer_pass,$hashed_password))
+                {
+                    $result = flashMessage("Invalid username or password");
+                }
+
             }
-            else if(password_verify($customer_pass,$hashed_password) AND $check_cart ==1)
-            {
-                $_SESSION['customer_username'] = $username;
 
-                echo "<script>alert('You are Logged In')</script>";
-
-                echo"<script>window.open('__DIR__/../checkout.php','_self')</script>";
-            }
-            else if(!password_verify($customer_pass,$hashed_password))
-            {
-                $result = flashMessage("Invalid username or password");
-            }
 
         }
-
 
     }else
     {

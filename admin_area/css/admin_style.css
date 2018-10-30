@@ -241,3 +241,7 @@ hr.dotted {
     margin-right:5px;
 }
 
+/*placeholder style */
+.placeholder-highlight{
+    border: 1px solid #ccc;
+}

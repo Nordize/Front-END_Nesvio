@@ -228,31 +228,59 @@
                 </ul>
 
             </li><!-- li Ends -->
-            <li><!-- li Starts -->
+            <li><!-- shipping li Starts -->
 
-                <a href="#" data-toggle="collapse" data-target="#shipment">
+                <a href="#" data-toggle="collapse" data-target="#shipping">
 
-                    <i class="fa fa-fw fa-truck"></i> Shipment Options
+                    <i class="fa fa-fw fa-truck"></i> ECommerce Shipping
 
                     <i class="fa fa-fw fa-caret-down"></i>
 
-
                 </a>
 
-                <ul id="shipment" class="collapse">
+                <ul id="shipping" class="collapse">
 
                     <li>
-                        <a href="index.php?insert_slide"> Insert Shipment Option </a>
+                        <a href="admin_index.php?insert_shipping_zone"> Insert Shipment Zone </a>
                     </li>
-
                     <li>
-                        <a href="index.php?view_slides"> View Shipment Options </a>
+                        <a href="admin_index.php?view_shipping_zones"> View Shipment Zone </a>
+                    </li>
+                    <li>
+                        <a href="admin_index.php?insert_shipping_type"> View Shipment Type </a>
+                    </li>
+                    <li>
+                        <a href="admin_index.php?view_shipping_type"> View Shipment Types </a>
                     </li>
 
 
                 </ul>
 
-            </li><!-- li Ends -->
+            </li><!--shipping li Ends -->
+            <li><!-- countries li Starts -->
+
+                <a href="#" data-toggle="collapse" data-target="#countries">
+
+                    <i class="fa fa-globe"></i> ECommerce Shipping
+
+                    <i class="fa fa-fw fa-caret-down"></i>
+
+                </a>
+
+                <ul id="countries" class="collapse">
+
+                    <li>
+                        <a href="index.php?insert_country"> Insert Country</a>
+                    </li>
+                    <li>
+                        <a href="index.php?view_country"> View Country</a>
+                    </li>
+
+
+
+                </ul>
+
+            </li><!--shipping li Ends -->
 
             <li>
 

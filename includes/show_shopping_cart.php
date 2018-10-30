@@ -8,6 +8,7 @@
 
 
 $total = 0;
+$final_total = 0;
 
 global $db_connect;
 
@@ -52,14 +53,15 @@ if ($run_items_in_cart->rowCount() > 0) {
 
                 }
 
-                $product_price = sprintf('%.2f',$product_price);
-                $sub_total = sprintf('%.2f',$sub_total);
+                $product_price = sprintf('%.2f', $product_price);
+                $sub_total = sprintf('%.2f', $sub_total);
 
-                $product_price += $sub_total;
+                $final_total += $sub_total;
+                $final_total = sprintf('%.2f',$final_total);
 
 
                 echo "
-                    <tbody><!--tbody start -->
+                    <tbody id='cart_products-tbody'><!--tbody start -->
                     <tr><!-- tr start -->
                         <td>
                             <img src='admin_area/product_images/$product_img1'>
@@ -106,12 +108,11 @@ if ($run_items_in_cart->rowCount() > 0) {
     }
 
 }
-$total = sprintf('%.2f',$total);
 echo"
     <tfoot><!--tfoot start -->
         <tr>
             <th colspan='5'>Total</th>
-            <th colspan='2'>$ $total</th>
+            <th colspan='2'>$ $final_total</th>
         </tr>
     </tfoot>
     

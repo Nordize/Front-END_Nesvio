@@ -23,6 +23,7 @@ include ('functions/functions.php');
     <link href="styles/style.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
+    <script src="http://thecodeplayer.com/uploads/js/prefixfree-1.0.7.js" type="text/javascript" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -45,6 +46,7 @@ include ('functions/functions.php');
                     });
                 }
             });
+
         });
 
     </script>
@@ -68,7 +70,7 @@ include ('functions/functions.php');
                 }
                 ?>
             </a>
-            <a href="#">Shopping Cart Total Price: <?php total_price();?>, Total Item <?php items_in_cart();?></a>
+            <a href="#">Shopping Cart Total Price: <span class="subtotal-cart-price"> <?php total_price();?></span>, Total Item <?php items_in_cart();?></a>
         </div>
         <div class="col-md-6"> <!--Header start-->
             <ul class="menu">
@@ -168,6 +170,16 @@ include ('functions/functions.php');
                     Cart
                 </li>
             </ul>
+
+            <div class ="crumb_body">
+                <div class="breadcrumb_nav flat" >
+                    <a href="cart.php" class="active">Shopping Cart</a>
+                    <a href="review_order.php">Checkout Details</a>
+                    <a href="#">Order Complete</a>
+                </div>
+            </div>
+
+
         </div>
 
         <div class="col-md-9" id="cart"><!--col-md-9 start -->
@@ -206,7 +218,7 @@ include ('functions/functions.php');
 
                             </button>
 
-                            <a href="checkout.php" class="btn btn-primary">
+                            <a href="review_order.php" class="btn btn-primary">
                                 Proceed to checkout <i class="fa fa-chevron-right"></i>
                             </a>
                         </div>

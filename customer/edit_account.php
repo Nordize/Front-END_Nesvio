@@ -199,7 +199,48 @@ if(isset($_POST['update']))
     </div>
     <div class="form-group"><!--form-group start -->
         <label>Country:</label>
-        <input type="text" class="form-control" name="c_country" required value="<?php echo $customer_country?>">
+
+        <select name="c_country" class="form-control" required>
+            <option value="">Select A Country</option>
+            <?php
+            $get_countries = "SELECT * FROM countries";
+            $run_countries = $db_connect->query($get_countries);
+
+
+            if($run_countries->rowCount()>0)
+            {
+                while ($row_countries = $run_countries->fetch())
+                {
+
+                    $country_id = $row_countries['id'];
+                    $country_code = $row_countries['country_code'];
+                    $country_name = $row_countries['country_name'];
+
+                    ?>
+                    <option value="<?php echo $country_id;?>"
+                        <?php
+                        if(isset($_GET['c_country']))
+                        {
+                            if($c_country == $country_id ) {echo "selected";}
+                        }
+
+
+                        ?>
+                    >
+                        <?php echo $country_name;?>
+
+                    </option>
+                    <?php
+
+                }
+            }
+
+            ?>
+        </select>
+
+
+
+
     </div>
     <div class="form-group"><!--form-group start -->
         <label>Zip code:</label>

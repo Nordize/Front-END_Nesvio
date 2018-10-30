@@ -25,10 +25,13 @@ include ('functions/functions.php');
     <link href="styles/style.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
+    <script src="http://thecodeplayer.com/uploads/js/prefixfree-1.0.7.js" type="text/javascript" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script scr="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+
 </head>
 
 <body>
@@ -145,9 +148,21 @@ include ('functions/functions.php');
                     <a href="index.php">Home</a>
                 </li>
                 <li>
-                    Register
+                    Checkout Details
                 </li>
             </ul>
+
+            <div class ="crumb_body">
+                <div class="breadcrumb_nav flat" >
+                    <a href="cart.php" >Cart</a>
+                    <a href="#">Shipping Information</a>
+                    <a href="#">Shipping Method</a>
+                    <a href="payment_option.php">Payment Method</a>
+                    <a href="#">Order Confirmation</a>
+                </div>
+            </div>
+
+
         </div> <!--col-md-12 end-->
 
         <div class="col-md-3"><!-- col-md-3-->
@@ -161,7 +176,7 @@ include ('functions/functions.php');
             {
                 include('customer/customer_login.php');
             }else{
-                include ('payment_option.php');
+                include ('payment_option.php'); //change here
             }
             ?>
         </div>

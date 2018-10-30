@@ -38,8 +38,22 @@ function add_cart()
         $run_price = $db_connect->query($get_price);
         $row_price = $run_price->fetch();
 
+        $product_price = $row_price['product_price'];
+        $prodict_psp_price = $row_price['product_psp_price'];
+        $product_label = $row_price['product_label'];
+
+        if($product_label == "yes")
+        {
+            $show_price = $prodict_psp_price *$product_qty;
+
+        }elseif($product_label == "no")
+        {
+            $show_price = $product_price *$product_qty;
+        }
+
+
         try{
-            $query_cart = "INSERT INTO cart (p_id,ip_add,qty,p_size) VALUES ('$p_id','$ip_add','$product_qty','$product_size')";
+            $query_cart = "INSERT INTO cart (p_id,ip_add,qty,p_size,p_price) VALUES ('$p_id','$ip_add','$product_qty','$product_size','$show_price')";
 
             $db_connect->exec($query_cart);
             $db_connect = null;
@@ -62,6 +76,7 @@ function total_price()
     $ip_add = getRealUserIp();
 
     $total =0;
+    $final_total = 0;
 
     $select_cart = "SELECT * FROM cart WHERE ip_add = '$ip_add'";
 
@@ -77,15 +92,45 @@ function total_price()
 
         while($row_price = $run_price->fetch(PDO::FETCH_BOTH))
         {
-            $sub_total = $row_price['product_price']*$pro_qty;
-            $total += $sub_total;
+
+            $only_price = $row_price['product_price'];
+            $pro_psp_price = $row_price['product_psp_price'];
+            $pro_label = $row_price['product_label'];
+
+            if($pro_label == "yes"){
+
+                $product_price = $pro_psp_price;
+                $sub_total = $product_price * $pro_qty;
+
+            }
+            else if($pro_label == "no"){
+
+                $product_price = $only_price;
+                $sub_total = $product_price * $pro_qty;
+
+            }
+
+
+            $product_price = sprintf('%.2f', $product_price);
+            $sub_total = sprintf('%.2f', $sub_total);
+
+            //$total += $sub_total;
+            //$total = sprintf('%.2f',$total);
+
+            //$tax = $total*0.07;   #Sales Tax in Florida is 7%
+            //$tax = sprintf('%.2f',$tax);
+
+            //$final_total = $total + $tax;
+            $final_total += $sub_total;
+            $final_total = sprintf('%.2f',$final_total);
         }
 
 
 
 
     }
-    echo"$".$total;
+    echo"$".$final_total;
+
 }
 
 

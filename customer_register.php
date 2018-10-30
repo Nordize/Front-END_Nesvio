@@ -12,6 +12,12 @@ include ('includes/dblogin.php');
 include ('functions/functions.php');
 include ('resources/utilities.php');
 
+if(isset($_SESSION['customer_username']))
+{
+    echo "<script>window.open('index.php','_self')</script>";
+}
+
+
 if(isset($_POST['Register']))
 {
 
@@ -92,7 +98,7 @@ if(isset($_POST['Register']))
             //hashing the password
             $hashed_password = password_hash($c_pass, PASSWORD_DEFAULT);
             try{
-                //create SQL insert statement
+                //create SQL insert statement // add data into customer table
                 $sqlInsert = "INSERT INTO customer (customer_firstname,customer_lastname,customer_username, customer_email, customer_pass, customer_address,customer_city,customer_state,customer_country,customer_zipcode,customer_phone,customer_image,customer_ip,join_date) 
             VALUES (:firstname, :lastname, :username, :email,:password,:address,:city,:state,:country,:zipcode,:phone,:image,:ip,now())";
 
@@ -101,6 +107,13 @@ if(isset($_POST['Register']))
 
                 //add the data into the database
                 $statement->execute(array(':firstname' => $c_firstname, ':lastname' => $c_lastname, ':username' => $c_username,':email' =>$c_email,':password'=>$hashed_password,':address'=>$c_address,':city'=>$c_city,':state'=>$c_state,':country'=>$c_country,':zipcode'=>$c_zipcode,':phone'=>$c_phone,':image'=>$c_image,':ip'=>$c_ip));
+
+                //insert customerId in customer addresses table
+                $last_insert_customer_id = $db_connect->lastInsertId();  //put last customerId into customer addresses table
+                $customerID_insert = "INSERT INTO customer_addresses (customer_id) VALUES (:last_insert_customer_id)";
+                $run_customer_addresses = $db_connect->prepare($customerID_insert);
+                $run_customer_addresses->execute(array(':last_insert_customer_id'=>$last_insert_customer_id));
+
 
                 //check if one new row was created
                 if($statement->rowCount() == 1){
@@ -337,10 +350,51 @@ if(isset($_POST['Register']))
                         <label>State:</label>
                         <input type="text" class="form-control" name="c_state" required>
                     </div>
-                    <div class="form-group"><!--form-group start -->
-                        <label>Country:</label>
+                    <!--<div class="form-group"><!--form-group start -->
+                       <!-- <label>Country:</label>
                         <input type="text" class="form-control" name="c_country" required>
+                    </div>-->
+                    <div class="form-group"><!--form-group start -->
+                        <label> Country: </label>
+                        <select name="c_country" class="form-control" required>
+                            <option value="">Select A Country</option>
+                            <?php
+                            $get_countries = "SELECT * FROM countries";
+                            $run_countries = $db_connect->query($get_countries);
+
+
+                            if($run_countries->rowCount()>0)
+                            {
+                                while ($row_countries = $run_countries->fetch())
+                                {
+
+                                    $country_id = $row_countries['id'];
+                                    $country_code = $row_countries['country_code'];
+                                    $country_name = $row_countries['country_name'];
+
+                                    ?>
+                                    <option value="<?php echo $country_id;?>"
+                                        <?php
+                                        if(isset($_GET['c_country']))
+                                        {
+                                            if($c_country == $country_id ) {echo "selected";}
+                                        }
+
+
+                                        ?>
+                                    >
+                                        <?php echo $country_name;?>
+
+                                    </option>
+                                    <?php
+
+                                }
+                            }
+
+                            ?>
+                        </select>
                     </div>
+
                     <div class="form-group"><!--form-group start -->
                         <label>Zip code:</label>
                         <input type="text" class="form-control" name="c_zipcode" required>
