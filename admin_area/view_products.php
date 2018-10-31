@@ -94,7 +94,7 @@ if(isset($_GET['delete_product'])){
                                 <th>Product Price</th>
                                 <th>Product Label (Sale ot not)</th>
                                 <th>Product Sale Price</th>
-                                <th>Product sold</th>
+                                <!--<th>Product sold</th>-->
                                 <th>Product Keywords</th>
                                 <th>Product Date</th>
                                 <th>Product Delete</th>
@@ -156,15 +156,15 @@ if(isset($_GET['delete_product'])){
 
                                     <td>$ <?php echo $pro_psp_price; ?></td>
 
-                                    <td>
-                                        <?php
+                                  <!--  <td>
+                                        <?php/*
 
                                         $get_sold = "SELECT * FROM pending_orders WHERE product_id='$pro_id'";
                                         $run_sold = $db_connect->query($get_sold);
                                         $count = $run_sold->fetchColumn();
-                                        echo $count;
+                                        echo $count; */
                                         ?>
-                                    </td>
+                                    </td> -->
 
                                     <td> <?php echo $pro_keywords; ?> </td>
 

@@ -44,6 +44,59 @@ if(isset($_POST['submit']))
     }
 }
 
+//Upload CSV file
+if(isset($_POST["submit_csv"])){
+
+    $filename=$_FILES["upload_csv"]["tmp_name"];
+
+
+    if($_FILES["upload_csv"]["size"] > 0)
+    {
+
+        $file = fopen($filename, "r");
+
+        fgetcsv($file);  // used for skip header
+
+        while (($getData = fgetcsv($file, 10000, ",")) !== FALSE)
+        {
+
+            $p_cat_id = $getData[0];
+            $cat_id = $getData[1];
+            $manufacturer_id = $getData[2];
+            $product_title = $getData[3];
+            $product_price = $getData[4];
+            $product_psp_price = $getData[5];
+            $product_desc = $getData[6];
+            $product_weight = $getData[7];
+            $product_keywords = $getData[8];
+            $product_label = $getData[9];
+
+
+
+            $upload_sql = "INSERT into products (p_cat_id,cat_id,manufacturer_id,product_title,product_price,product_psp_price,product_desc,product_weight,product_keywords,product_label) 
+                   values ('$p_cat_id','$cat_id','$manufacturer_id','$product_title','$product_price','$product_psp_price','$product_desc','$product_weight','$product_keywords','$product_label')";
+
+            $upload_result = $db_connect->query($upload_sql);
+
+            if(!isset($upload_result))
+            {
+                echo "<script type='text/javascript'>
+							alert('Invalid File:Please Upload CSV File.');
+							window.location = 'insert_product.php';
+						  </script>";
+            }
+            else {
+                echo "<script type='text/javascript'>
+						alert('CSV File has been successfully Imported.');
+						window.location = 'insert_product.php';
+					</script>";
+            }
+        }
+
+        fclose($file);
+    }
+}
+
 ?>
 
 <html>
@@ -83,6 +136,27 @@ if(isset($_POST['submit']))
                        <i class="fa fa-money fa-fw"></i> Insert Products
                     </h3>
                 </div>
+                <!--UPLOAD FILE WITH CSV start -->
+                <div class="panel-body"><!--panel-body -->
+                    <form class="form-horizontal" action="<?=$_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data"><!--form-horizontal -->
+                        <div class="form-group"><!-- form-group start-->
+                            <label class="col-md-3 control-label"> Upload Product with .CSV file</label>
+                            <div class="col-md-6">
+                                <input type="file" name="upload_csv" class="form-control">
+                            </div>
+                        </div><!-- form-group end-->
+                        <div class="form-group"><!-- form-group start-->
+                            <label class="col-md-3 control-label"> </label>
+                            <div class="col-md-6">
+                                <input type="submit" name="submit_csv" value="Submit Your CSV File" class="btn btn-primary form-control">
+                            </div>
+                        </div><!-- form-group end-->
+                    </form>
+                </div>
+
+                <hr>
+                <!--UPLOAD FILE WITH CSV end -->
+
                 <div class="panel-body"><!--panel-body -->
                     <form class="form-horizontal" action="<?=$_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data"><!--form-horizontal -->
                         <div class="form-group"><!-- form-group start-->
@@ -230,7 +304,9 @@ if(isset($_POST['submit']))
                         </div><!-- form-group end-->
 
                     </form>
+
                 </div>
+
             </div>
         </div>
     </div>
