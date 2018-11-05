@@ -8,12 +8,8 @@
  * Time: 4:35 PM
  */
 //////get customer ID/////////////
-$customer_username = $_SESSION['customer_username'];
-$get_customer="SELECT customer_id FROM customer WHERE customer_username = '$customer_username'";
-$run_customer = $db_connect->query($get_customer);
-$row_customer = $run_customer->fetch();
 
-$customer_id = $row_customer['customer_id'];
+
 ///////////////////////////////
 
 $total = 0;
@@ -109,246 +105,227 @@ if ($run_items_in_cart->rowCount() > 0) {
 
                                 <?php
 
-                                $select_customer_addresses = "SELECT * FROM customer_addresses WHERE customer_id='$customer_id'";
-                                $run_customer_addresses = $db_connect->query($select_customer_addresses);
-                                $row_customer_addresses = $run_customer_addresses->fetch();
+                                if(isset($_SESSION['customer_username'])) {
+                                    $customer_username = $_SESSION['customer_username'];
+                                    $get_customer = "SELECT customer_id FROM customer WHERE customer_username = '$customer_username'";
+                                    $run_customer = $db_connect->query($get_customer);
+                                    $row_customer = $run_customer->fetch();
 
-                                $billing_country = $row_customer_addresses['billing_country'];
-                                $billing_zipcode = $row_customer_addresses['billing_zipcode'];
-                                $shipping_country = $row_customer_addresses['shipping_country'];
-                                $shipping_zipcode = $row_customer_addresses['shipping_zipcode'];
+                                    $customer_id = $row_customer['customer_id'];
 
-                                $shipping_zone_id = ""; //default is blank
 
-                                //this case for local shipping
-                                if(@$_SESSION['is_shipping_address_same'] == 'yes')
-                                {
-                                    if(empty($billing_country) and empty($billing_zipcode))
-                                    {
-                                        echo "
+                                    $select_customer_addresses = "SELECT * FROM customer_addresses WHERE customer_id='$customer_id'";
+                                    $run_customer_addresses = $db_connect->query($select_customer_addresses);
+                                    $row_customer_addresses = $run_customer_addresses->fetch();
+
+                                    $billing_country = $row_customer_addresses['billing_country'];
+                                    $billing_zipcode = $row_customer_addresses['billing_zipcode'];
+                                    $shipping_country = $row_customer_addresses['shipping_country'];
+                                    $shipping_zipcode = $row_customer_addresses['shipping_zipcode'];
+
+                                    $shipping_zone_id = ""; //default is blank
+
+                                    //this case for local shipping
+                                    if (@$_SESSION['is_shipping_address_same'] == 'yes') {
+                                        if (empty($billing_country) and empty($billing_zipcode)) {
+                                            echo "
                                         <li>
                                         <p>
                                         There are no shipping types avaliable. Please check your address, or contact us if you need any help.
                                         </p>
                                         </li>
                                         ";
-                                    }
+                                        }
 
-                                    $select_zones = "SELECT * FROM zones ORDER BY zone_order DESC";
-                                    $run_zones = $db_connect->query($select_zones);
+                                        $select_zones = "SELECT * FROM zones ORDER BY zone_order DESC";
+                                        $run_zones = $db_connect->query($select_zones);
 
-                                    if($run_zones->rowCount()>0)
-                                    {
-                                        while($row_zones = $run_zones->fetch())
-                                        {
-                                            $zone_id = $row_zones['zone_id'];
-                                            $select_zones_locations = "SELECT  COUNT(DISTINCT zone_id) FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$billing_country' AND location_type='country')";
-                                            $run_zones_locations = $db_connect->query($select_zones_locations);
-
-                                            $count_zones_locations = $run_zones_locations->fetchColumn();
-
-                                            if($count_zones_locations != "0")
-                                            {
-
-                                                $select_zones_locations = "SELECT  DISTINCT zone_id FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$billing_country' AND location_type='country')";
+                                        if ($run_zones->rowCount() > 0) {
+                                            while ($row_zones = $run_zones->fetch()) {
+                                                $zone_id = $row_zones['zone_id'];
+                                                $select_zones_locations = "SELECT  COUNT(DISTINCT zone_id) FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$billing_country' AND location_type='country')";
                                                 $run_zones_locations = $db_connect->query($select_zones_locations);
 
-                                                $row_zones_locations = $run_zones_locations->fetch();
-                                                $zone_id = $row_zones_locations['zone_id'];
+                                                $count_zones_locations = $run_zones_locations->fetchColumn();
 
-                                                $select_zone_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_zone='$zone_id'";
+                                                if ($count_zones_locations != "0") {
 
-                                                $run_zone_shipping = $db_connect->query($select_zone_shipping);
+                                                    $select_zones_locations = "SELECT  DISTINCT zone_id FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$billing_country' AND location_type='country')";
+                                                    $run_zones_locations = $db_connect->query($select_zones_locations);
 
-                                                $count_zones_shipping = $run_zone_shipping->fetchColumn();
+                                                    $row_zones_locations = $run_zones_locations->fetch();
+                                                    $zone_id = $row_zones_locations['zone_id'];
 
-                                                if($count_zones_shipping != "0")
-                                                {
-                                                    $select_zone_postcodes = "SELECT COUNT(*) FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
-                                                    $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
+                                                    $select_zone_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_zone='$zone_id'";
 
-                                                    $count_zone_postcodes = $run_zone_postcodes->fetchColumn();
+                                                    $run_zone_shipping = $db_connect->query($select_zone_shipping);
 
-                                                    if($count_zone_postcodes != "0")
-                                                    {
-                                                        $select_zone_postcodes = "SELECT * FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
+                                                    $count_zones_shipping = $run_zone_shipping->fetchColumn();
+
+                                                    if ($count_zones_shipping != "0") {
+                                                        $select_zone_postcodes = "SELECT COUNT(*) FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
                                                         $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
 
-                                                        while ($row_zones_postcodes = $run_zone_postcodes->fetch())
-                                                        {
-                                                            $location_code = $row_zones_postcodes['location_code'];
+                                                        $count_zone_postcodes = $run_zone_postcodes->fetchColumn();
 
-                                                            if($location_code == $billing_zipcode)
-                                                            {
-                                                                $shipping_zone_id = $zone_id;
+                                                        if ($count_zone_postcodes != "0") {
+                                                            $select_zone_postcodes = "SELECT * FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
+                                                            $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
+
+                                                            while ($row_zones_postcodes = $run_zone_postcodes->fetch()) {
+                                                                $location_code = $row_zones_postcodes['location_code'];
+
+                                                                if ($location_code == $billing_zipcode) {
+                                                                    $shipping_zone_id = $zone_id;
+                                                                }
                                                             }
-                                                        }
 
-                                                    }else{
-                                                        $shipping_zone_id = $zone_id;
+                                                        } else {
+                                                            $shipping_zone_id = $zone_id;
+                                                        }
                                                     }
+
                                                 }
 
                                             }
-
                                         }
-                                    }
 
 
-
-                                }elseif (@$_SESSION['is_shipping_address_same'] == 'no')
-                                {
-                                    if(empty($shipping_country) and empty($shipping_zipcode))
-                                    {
-                                        echo "
+                                    } elseif (@$_SESSION['is_shipping_address_same'] == 'no') {
+                                        if (empty($shipping_country) and empty($shipping_zipcode)) {
+                                            echo "
                                         <li>
                                         <p>
                                         There are no shipping types avaliable. Please check your address, or contact us if you need any help.
                                         </p>
                                         </li>
                                         ";
-                                    }
+                                        }
 
-                                    $select_zones = "SELECT * FROM zones ORDER BY zone_order DESC";
-                                    $run_zones = $db_connect->query($select_zones);
+                                        $select_zones = "SELECT * FROM zones ORDER BY zone_order DESC";
+                                        $run_zones = $db_connect->query($select_zones);
 
-                                    if($run_zones->rowCount()>0)
-                                    {
-                                        while($row_zones = $run_zones->fetch())
-                                        {
-                                            $zone_id = $row_zones['zone_id'];
-                                            $select_zones_locations = "SELECT  COUNT(DISTINCT zone_id) FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$shipping_country' AND location_type='country')";
-                                            $run_zones_locations = $db_connect->query($select_zones_locations);
-
-                                            $count_zones_locations = $run_zones_locations->fetchColumn();
-
-                                            if($count_zones_locations != "0")
-                                            {
-
-                                                $select_zones_locations = "SELECT  DISTINCT zone_id FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$shipping_country' AND location_type='country')";
+                                        if ($run_zones->rowCount() > 0) {
+                                            while ($row_zones = $run_zones->fetch()) {
+                                                $zone_id = $row_zones['zone_id'];
+                                                $select_zones_locations = "SELECT  COUNT(DISTINCT zone_id) FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$shipping_country' AND location_type='country')";
                                                 $run_zones_locations = $db_connect->query($select_zones_locations);
 
-                                                $row_zones_locations = $run_zones_locations->fetch();
-                                                $zone_id = $row_zones_locations['zone_id'];
+                                                $count_zones_locations = $run_zones_locations->fetchColumn();
 
-                                                $select_zone_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_zone='$zone_id'";
+                                                if ($count_zones_locations != "0") {
 
-                                                $run_zone_shipping = $db_connect->query($select_zone_shipping);
+                                                    $select_zones_locations = "SELECT  DISTINCT zone_id FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$shipping_country' AND location_type='country')";
+                                                    $run_zones_locations = $db_connect->query($select_zones_locations);
 
-                                                $count_zones_shipping = $run_zone_shipping->fetchColumn();
+                                                    $row_zones_locations = $run_zones_locations->fetch();
+                                                    $zone_id = $row_zones_locations['zone_id'];
 
-                                                if($count_zones_shipping != "0")
-                                                {
-                                                    $select_zone_postcodes = "SELECT COUNT(*) FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
-                                                    $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
+                                                    $select_zone_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_zone='$zone_id'";
 
-                                                    $count_zone_postcodes = $run_zone_postcodes->fetchColumn();
+                                                    $run_zone_shipping = $db_connect->query($select_zone_shipping);
 
-                                                    if($count_zone_postcodes != "0")
-                                                    {
-                                                        $select_zone_postcodes = "SELECT * FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
+                                                    $count_zones_shipping = $run_zone_shipping->fetchColumn();
+
+                                                    if ($count_zones_shipping != "0") {
+                                                        $select_zone_postcodes = "SELECT COUNT(*) FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
                                                         $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
 
-                                                        while ($row_zones_postcodes = $run_zone_postcodes->fetch())
-                                                        {
-                                                            $location_code = $row_zones_postcodes['location_code'];
+                                                        $count_zone_postcodes = $run_zone_postcodes->fetchColumn();
 
-                                                            if($location_code == $shipping_zipcode)
-                                                            {
-                                                                $shipping_zone_id = $zone_id;
+                                                        if ($count_zone_postcodes != "0") {
+                                                            $select_zone_postcodes = "SELECT * FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
+                                                            $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
+
+                                                            while ($row_zones_postcodes = $run_zone_postcodes->fetch()) {
+                                                                $location_code = $row_zones_postcodes['location_code'];
+
+                                                                if ($location_code == $shipping_zipcode) {
+                                                                    $shipping_zone_id = $zone_id;
+                                                                }
                                                             }
-                                                        }
 
-                                                    }else{
-                                                        $shipping_zone_id = $zone_id;
+                                                        } else {
+                                                            $shipping_zone_id = $zone_id;
+                                                        }
                                                     }
+
                                                 }
 
                                             }
-
                                         }
-                                    }
 
 
-                                }else{
+                                    } else {
 
-                                    if(empty($shipping_country) and empty($shipping_zipcode))
-                                    {
-                                        echo "
+                                        if (empty($shipping_country) and empty($shipping_zipcode)) {
+                                            echo "
                                         <li>
                                         <p>
                                         There are no shipping types avaliable. Please check your address, or contact us if you need any help.
                                         </p>
                                         </li>
                                         ";
-                                    }
+                                        }
 
-                                    $select_zones = "SELECT * FROM zones ORDER BY zone_order DESC";
-                                    $run_zones = $db_connect->query($select_zones);
+                                        $select_zones = "SELECT * FROM zones ORDER BY zone_order DESC";
+                                        $run_zones = $db_connect->query($select_zones);
 
-                                    if($run_zones->rowCount()>0)
-                                    {
-                                        while($row_zones = $run_zones->fetch())
-                                        {
-                                            $zone_id = $row_zones['zone_id'];
+                                        if ($run_zones->rowCount() > 0) {
+                                            while ($row_zones = $run_zones->fetch()) {
+                                                $zone_id = $row_zones['zone_id'];
 
-                                            $select_zones_locations = "SELECT  COUNT(DISTINCT zone_id) FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$shipping_country' AND location_type='country')";
-                                            $run_zones_locations = $db_connect->query($select_zones_locations);
-
-
-                                            $count_zones_locations = $run_zones_locations->fetchColumn();
-
-                                            if($count_zones_locations != "0")
-                                            {
-
-                                                $select_zones_locations = "SELECT  DISTINCT zone_id FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$shipping_country' AND location_type='country')";
+                                                $select_zones_locations = "SELECT  COUNT(DISTINCT zone_id) FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$shipping_country' AND location_type='country')";
                                                 $run_zones_locations = $db_connect->query($select_zones_locations);
 
-                                                $row_zones_locations = $run_zones_locations->fetch();
-                                                $zone_id = $row_zones_locations['zone_id'];
 
-                                                $select_zone_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_zone='$zone_id'";
+                                                $count_zones_locations = $run_zones_locations->fetchColumn();
 
-                                                $run_zone_shipping = $db_connect->query($select_zone_shipping);
+                                                if ($count_zones_locations != "0") {
 
-                                                $count_zones_shipping = $run_zone_shipping->fetchColumn();
+                                                    $select_zones_locations = "SELECT  DISTINCT zone_id FROM zones_locations WHERE zone_id='$zone_id' AND (location_code ='$shipping_country' AND location_type='country')";
+                                                    $run_zones_locations = $db_connect->query($select_zones_locations);
 
-                                                if($count_zones_shipping != "0")
-                                                {
-                                                    $select_zone_postcodes = "SELECT COUNT(*) FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
-                                                    $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
+                                                    $row_zones_locations = $run_zones_locations->fetch();
+                                                    $zone_id = $row_zones_locations['zone_id'];
 
-                                                    $count_zone_postcodes = $run_zone_postcodes->fetchColumn();
+                                                    $select_zone_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_zone='$zone_id'";
 
-                                                    if($count_zone_postcodes != "0")
-                                                    {
-                                                        $select_zone_postcodes = "SELECT * FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
+                                                    $run_zone_shipping = $db_connect->query($select_zone_shipping);
+
+                                                    $count_zones_shipping = $run_zone_shipping->fetchColumn();
+
+                                                    if ($count_zones_shipping != "0") {
+                                                        $select_zone_postcodes = "SELECT COUNT(*) FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
                                                         $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
 
-                                                        while ($row_zones_postcodes = $run_zone_postcodes->fetch())
-                                                        {
-                                                            $location_code = $row_zones_postcodes['location_code'];
-                                                            if($location_code == $shipping_zipcode)
-                                                            {
-                                                                $shipping_zone_id = $zone_id;
-                                                            }
-                                                        }
+                                                        $count_zone_postcodes = $run_zone_postcodes->fetchColumn();
 
-                                                    }else{
-                                                        $shipping_zone_id = $zone_id;
+                                                        if ($count_zone_postcodes != "0") {
+                                                            $select_zone_postcodes = "SELECT * FROM zones_locations WHERE zone_id = '$zone_id' AND location_type='postcode'";
+                                                            $run_zone_postcodes = $db_connect->query($select_zone_postcodes);
+
+                                                            while ($row_zones_postcodes = $run_zone_postcodes->fetch()) {
+                                                                $location_code = $row_zones_postcodes['location_code'];
+                                                                if ($location_code == $shipping_zipcode) {
+                                                                    $shipping_zone_id = $zone_id;
+                                                                }
+                                                            }
+
+                                                        } else {
+                                                            $shipping_zone_id = $zone_id;
+                                                        }
                                                     }
+
                                                 }
 
                                             }
-
                                         }
                                     }
-                                }
 
-                                if(!empty($shipping_zone_id))
-                                {
+                                    if (!empty($shipping_zone_id)) {
 
-                                    $select_shipping_types = "SELECT *,IF(
+                                        $select_shipping_types = "SELECT *,IF(
                                                                         $total_weight > (
                                                                         SELECT MAX(shipping_weight) FROM shipping WHERE shipping_type = type_id AND shipping_zone='$shipping_zone_id'),
                                                                         (SELECT shipping_cost FROM shipping WHERE shipping_type=type_id AND shipping_zone='$shipping_zone_id' ORDER BY shipping_weight DESC LIMIT 0,1),
@@ -356,79 +333,73 @@ if ($run_items_in_cart->rowCount() > 0) {
                                                                         
                                                                         ) AS shipping_cost FROM shipping_types WHERE type_local = 'yes' ORDER BY type_order ASC";
 
-                                    $run_shipping_types = $db_connect->query($select_shipping_types);
-                                    $i=0;
+                                        $run_shipping_types = $db_connect->query($select_shipping_types);
+                                        $i = 0;
 
-                                    if($run_shipping_types->rowCount()>0)
-                                    {
-                                        while($row_shipping_types = $run_shipping_types->fetch())
-                                        {
-                                            $i++;
+                                        if ($run_shipping_types->rowCount() > 0) {
+                                            while ($row_shipping_types = $run_shipping_types->fetch()) {
+                                                $i++;
 
-                                            $type_id = $row_shipping_types['type_id'];
-                                            $type_name = $row_shipping_types['type_name'];
-                                            $type_default = $row_shipping_types['type_default'];
-                                            $shipping_cost = $row_shipping_types['shipping_cost'];
+                                                $type_id = $row_shipping_types['type_id'];
+                                                $type_name = $row_shipping_types['type_name'];
+                                                $type_default = $row_shipping_types['type_default'];
+                                                $shipping_cost = $row_shipping_types['shipping_cost'];
 
-                                            if(!empty($shipping_cost))
-                                            {
-                                                ?>
-                                                <li>
-                                                    <input type="radio" name="shipping_type" value="<?php echo $type_id;?>" class="shipping_type" data-shipping_cost="<?php echo $shipping_cost;?>"
-                                                    <?php
-                                                    if($type_default == "yes")
-                                                    {
-                                                        $_SESSION["shipping_type"] = $type_id;
-                                                        $_SESSION["shipping_cost"] = $shipping_cost;
-
-                                                        echo "checked";
-
-
-                                                    }elseif ($i == 1)
-                                                    {
-                                                        $_SESSION["shipping_type"] = $type_id;
-                                                        $_SESSION["shipping_cost"] = $shipping_cost;
-
-                                                        echo "checked";
-
-                                                    }
-
+                                                if (!empty($shipping_cost)) {
                                                     ?>
-                                                    >
+                                                    <li>
+                                                        <input type="radio" name="shipping_type"
+                                                               value="<?php echo $type_id; ?>" class="shipping_type"
+                                                               data-shipping_cost="<?php echo $shipping_cost; ?>"
+                                                            <?php
+                                                            if ($type_default == "yes") {
+                                                                $_SESSION["shipping_type"] = $type_id;
+                                                                $_SESSION["shipping_cost"] = $shipping_cost;
 
-                                                    <?php echo $type_name;?> : <span class="text-muted">$ <?php echo $shipping_cost;?></span>
-
-                                                </li>
+                                                                echo "checked";
 
 
-                                                <?php
+                                                            } elseif ($i == 1) {
+                                                                $_SESSION["shipping_type"] = $type_id;
+                                                                $_SESSION["shipping_cost"] = $shipping_cost;
+
+                                                                echo "checked";
+
+                                                            }
+
+                                                            ?>
+                                                        >
+
+                                                        <?php echo $type_name; ?> : <span
+                                                                class="text-muted">$ <?php echo $shipping_cost; ?></span>
+
+                                                    </li>
+
+
+                                                    <?php
+                                                }
                                             }
                                         }
-                                    }
 
-                                }else{
-                                    //this case for international shipping
+                                    } else {
+                                        //this case for international shipping
 
-                                    if(!empty($billing_country) or !empty($shipping_country))
-                                    {
-                                        if(@$_SESSION['is_shipping_address_same'] == "yes")
-                                        {
-                                            $select_country_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_country ='$billing_country'";
+                                        if (!empty($billing_country) or !empty($shipping_country)) {
+                                            if (@$_SESSION['is_shipping_address_same'] == "yes") {
+                                                $select_country_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_country ='$billing_country'";
 
-                                        }elseif (@$_SESSION['is_shipping_address_same'] == "no")
-                                        {
-                                            $select_country_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_country ='$billing_country'";
+                                            } elseif (@$_SESSION['is_shipping_address_same'] == "no") {
+                                                $select_country_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_country ='$billing_country'";
 
-                                        }else{
-                                            $select_country_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_country ='$billing_country'";
-                                        }
+                                            } else {
+                                                $select_country_shipping = "SELECT COUNT(*) FROM shipping WHERE shipping_country ='$billing_country'";
+                                            }
 
-                                        $run_country_shipping = $db_connect->query($select_country_shipping);
-                                        $count_country_shipping = $run_country_shipping->fetchColumn();
+                                            $run_country_shipping = $db_connect->query($select_country_shipping);
+                                            $count_country_shipping = $run_country_shipping->fetchColumn();
 
-                                        if($count_country_shipping = "0")
-                                        {
-                                            echo "
+                                            if ($count_country_shipping = "0") {
+                                                echo "
                                             <li>
                                             <p>
                                             There are no shipping types matched/available for your address, or contact us if you need any help.
@@ -440,11 +411,10 @@ if ($run_items_in_cart->rowCount() > 0) {
                                             ";
 
 
-                                        }else{
-                                            if(@$_SESSION['is_shipping_address_same'] == "yes")
-                                            {
+                                            } else {
+                                                if (@$_SESSION['is_shipping_address_same'] == "yes") {
 
-                                                $select_shipping_types = "SELECT *,IF(
+                                                    $select_shipping_types = "SELECT *,IF(
                                                                         $total_weight > (
                                                                         SELECT MAX(shipping_weight) FROM shipping WHERE shipping_type = type_id AND shipping_country='$billing_country'),
                                                                         (SELECT shipping_cost FROM shipping WHERE shipping_type=type_id AND shipping_country='$billing_country' ORDER BY shipping_weight DESC LIMIT 0,1),
@@ -452,10 +422,9 @@ if ($run_items_in_cart->rowCount() > 0) {
                                                                         
                                                                         ) AS shipping_cost FROM shipping_types WHERE type_local = 'no' ORDER BY type_order ASC";
 
-                                            }elseif (@$_SESSION['is_shipping_address_same'] == "no")
-                                            {
+                                                } elseif (@$_SESSION['is_shipping_address_same'] == "no") {
 
-                                                $select_shipping_types = "SELECT *,IF(
+                                                    $select_shipping_types = "SELECT *,IF(
                                                                         $total_weight > (
                                                                         SELECT MAX(shipping_weight) FROM shipping WHERE shipping_type = type_id AND shipping_country='$shipping_country'),
                                                                         (SELECT shipping_cost FROM shipping WHERE shipping_type=type_id AND shipping_country='$shipping_country' ORDER BY shipping_weight DESC LIMIT 0,1),
@@ -464,9 +433,8 @@ if ($run_items_in_cart->rowCount() > 0) {
                                                                         ) AS shipping_cost FROM shipping_types WHERE type_local = 'no' ORDER BY type_order ASC";
 
 
-                                            }else
-                                            {
-                                                $select_shipping_types = "SELECT *,IF(
+                                                } else {
+                                                    $select_shipping_types = "SELECT *,IF(
                                                                         $total_weight > (
                                                                         SELECT MAX(shipping_weight) FROM shipping WHERE shipping_type = type_id AND shipping_country='$billing_country'),
                                                                         (SELECT shipping_cost FROM shipping WHERE shipping_type=type_id AND shipping_country='$billing_country' ORDER BY shipping_weight DESC LIMIT 0,1),
@@ -474,65 +442,67 @@ if ($run_items_in_cart->rowCount() > 0) {
                                                                         
                                                                         ) AS shipping_cost FROM shipping_types WHERE type_local = 'no' ORDER BY type_order ASC";
 
-                                            }
+                                                }
 
 
-                                            $run_shipping_types = $db_connect->query($select_shipping_types);
-                                            $i=0;
+                                                $run_shipping_types = $db_connect->query($select_shipping_types);
+                                                $i = 0;
 
-                                            if($run_shipping_types->rowCount()>0)
-                                            {
-                                                while($row_shipping_types = $run_shipping_types->fetch())
-                                                {
-                                                    $i++;
+                                                if ($run_shipping_types->rowCount() > 0) {
+                                                    while ($row_shipping_types = $run_shipping_types->fetch()) {
+                                                        $i++;
 
-                                                    $type_id = $row_shipping_types['type_id'];
-                                                    $type_name = $row_shipping_types['type_name'];
-                                                    $type_default = $row_shipping_types['type_default'];
-                                                    $shipping_cost = $row_shipping_types['shipping_cost'];
+                                                        $type_id = $row_shipping_types['type_id'];
+                                                        $type_name = $row_shipping_types['type_name'];
+                                                        $type_default = $row_shipping_types['type_default'];
+                                                        $shipping_cost = $row_shipping_types['shipping_cost'];
 
-                                                    if(!empty($shipping_cost))
-                                                    {
-                                                        ?>
-                                                        <li>
-                                                            <input type="radio" name="shipping_type" value="<?php echo $type_id;?>" class="shipping_type" data-shipping_cost="<?php echo $shipping_cost;?>"
-                                                                <?php
-                                                                if($type_default == "yes")
-                                                                {
-                                                                    $_SESSION["shipping_type"] = $type_id;
-                                                                    $_SESSION["shipping_cost"] = $shipping_cost;
+                                                        if (!empty($shipping_cost)) {
+                                                            ?>
+                                                            <li>
+                                                                <input type="radio" name="shipping_type"
+                                                                       value="<?php echo $type_id; ?>"
+                                                                       class="shipping_type"
+                                                                       data-shipping_cost="<?php echo $shipping_cost; ?>"
+                                                                    <?php
+                                                                    if ($type_default == "yes") {
+                                                                        $_SESSION["shipping_type"] = $type_id;
+                                                                        $_SESSION["shipping_cost"] = $shipping_cost;
 
-                                                                    echo "checked";
-
-
-                                                                }elseif ($i == 1)
-                                                                {
-                                                                    $_SESSION["shipping_type"] = $type_id;
-                                                                    $_SESSION["shipping_cost"] = $shipping_cost;
-
-                                                                    echo "checked";
-
-                                                                }
-
-                                                                ?>
-                                                            >
-
-                                                            <?php echo $type_name;?> : <span class="text-muted">$ <?php echo $shipping_cost;?></span>
-
-                                                        </li>
+                                                                        echo "checked";
 
 
-                                                        <?php
+                                                                    } elseif ($i == 1) {
+                                                                        $_SESSION["shipping_type"] = $type_id;
+                                                                        $_SESSION["shipping_cost"] = $shipping_cost;
+
+                                                                        echo "checked";
+
+                                                                    }
+
+                                                                    ?>
+                                                                >
+
+                                                                <?php echo $type_name; ?> : <span
+                                                                        class="text-muted">$ <?php echo $shipping_cost; ?></span>
+
+                                                            </li>
+
+
+                                                            <?php
+                                                        }
                                                     }
                                                 }
+
+
                                             }
 
-
                                         }
-
                                     }
+                                }else
+                                {
+                                    echo "Please login to see shipping option.";
                                 }
-
                                 ?>
 
                                 <?php echo"

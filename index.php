@@ -22,10 +22,19 @@ include ('functions/functions.php');
     <link href="styles/style.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
+    <!-- Bootstrap Dropdown Hover CSS -->
+    <link href="styles/animate.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+
+    <!-- Bootstrap Dropdown Hover JS -->
+    <script src="js/bootstrap-dropdownhover.min.js"></script>
+
 
 </head>
 
@@ -87,6 +96,7 @@ include ('functions/functions.php');
                     <img src="images/EiShops_resize.png" alt="E-commerce Logo" class="visible-xs" style="margin-top: 5px;">
                 </a>
             </div>
+
             <!-- search bar start here -->
             <?php include ('includes/searchModule.php');?>
             <!-- search bar end here -->

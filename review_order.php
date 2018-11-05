@@ -964,7 +964,7 @@ if(isset($_SESSION['customer_username']))
                             </tr>
                             <tr>
                                 <th colspan="2">
-                                    <input id="stripe-radio" type="radio" name="payment_method" value="stripe" checked>
+                                    <input id="stripe-radio" type="radio" name="payment_method" value="stripe">
                                     <label for="stripe-radio">Credit Card (Stripe)</label>
                                     <p id="stripe-desc" class="text-muted">
                                         Pay with your credit card via Stripe.
@@ -989,7 +989,7 @@ if(isset($_SESSION['customer_username']))
                                         <input type="hidden" name="strip_total_amount" value="<?php echo $strip_total_amount;?>">
                                         <input type="submit" id="stripe-submit" class="btn btn-success btn-lg" value="Proceed With Stripe"
                                                style="border-radius: 0px;" data-name="eishops.com" data-description="Pay with Credit Card"
-                                               data-image="../images/stripe-logo/png" data-key="<?php echo stripe['publishable_key'];?>"
+                                               data-image="../images/stripe-logo.png" data-key="<?php echo stripe['publishable_key'];?>"
                                                data-amount="<?php echo $strip_total_amount;?>" data-currency="usd" data-email="<?php echo $customer_email;?>">
                                     </form>
 

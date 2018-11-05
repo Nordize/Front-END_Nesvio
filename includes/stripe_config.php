@@ -8,6 +8,7 @@
 
 
 require_once('__DIR__/../vendor/autoload.php');
+#require_once ('__DIR__/../vendor/stripe/stripe-php/init.php');
 
 $stripe = array(
     "secret_key"      => "sk_live_Rw9DZSoSJhDoxgTQfIED0LWS",

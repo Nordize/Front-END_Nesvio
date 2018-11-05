@@ -69,12 +69,15 @@ if(isset($_GET['delete_product'])){
 
                 <div class="panel-heading" ><!-- panel-heading Starts -->
 
-                    <h3 class="panel-title" ><!-- panel-title Starts -->
+                    <h3 class="panel-title"><!-- panel-title Starts -->
 
                         <i class="fa fa-money fa-fw" ></i> View Products
 
                     </h3><!-- panel-title Ends -->
 
+                    <form class="form-horizontal" action="export_csv.php" method="post" name="upload_excel" enctype="multipart/form-data">
+                            <input type="submit" name="Export" class="btn btn-success" value="Export all data to csv file in Google Template"/>
+                    </form>
 
                 </div><!-- panel-heading Ends -->
 

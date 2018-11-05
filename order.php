@@ -10,59 +10,82 @@
 include ('includes/dblogin.php');
 include ('functions/functions.php');
 
-if(isset($_GET['c_id']))
+if(isset($_SESSION['customer_username']))
 {
-    $customer_id = $_GET['c_id'];
-}
+    $customer_username = $_SESSION['customer_username'];
+    $ip_add = getRealUserIp();
 
-$ip_add = getRealUserIp();
-$status = "Pending";
-$invoice_no = mt_rand();
+    $get_customer = "SELECT * FROM customer WHERE customer_username = '$customer_username'";
+    $run_customer = $db_connect->query($get_customer);
 
-$select_cart = "SELECT * FROM cart WHERE ip_add='$ip_add'";
-
-$run_cart = $db_connect->query($select_cart);
-
-if($run_cart->rowCount() >0)
-{
-    while($row_cart = $run_cart->fetch(PDO::FETCH_BOTH))
+    if($run_customer->rowCount()>0)
     {
-        $pro_id = $row_cart['p_id'];
-        $pro_size = $row_cart['p_size'];
-        $pro_qty = $row_cart['qty'];
+        $row_customer = $run_customer->fetch();
 
-        $get_products = "SELECT * FROM products WHERE product_id = '$pro_id'";
+        $customer_id = $row_customer['customer_id'];
 
-        $run_products = $db_connect->query($get_products);
+        $stripe_amount = $_POST['strip_total_amount'];
 
-        if($run_products->rowCount() >0)
-        {
-            while($row_products = $run_products->fetch(PDO::FETCH_BOTH))
-            {
-                $sub_total = $row_products['product_price']*$pro_qty;
+        $shipping_type = $_SESSION['shipping_type'];
+        $shipping_cost = $_SESSION['shipping_cost'];
 
-                $insert_customer_order = "INSERT INTO customer_orders (customer_id,due_amount,invoice_no,qty,size,order_date,order_status) 
-                                          VALUES (:customer_id,:due_amount,:invoice_no,:qty,:size,NOW(),:order_status)";
+        $is_shipping_address_name = $_SESSION['is_shipping_address_name'];
 
-                $run_customer_order = $db_connect->prepare($insert_customer_order);
-                $run_customer_order->execute(array(':customer_id'=>$customer_id,':due_amount'=>$sub_total,':invoice_no'=>$invoice_no,':qty'=>$pro_qty,':size'=>$pro_size,':order_status'=>$status));
+        $select_shipping_type = "SELECT * FROM shipping_types WHERE type_id = '$shipping_type'";
+        $run_shipping_type = $db_connect->query($select_shipping_type);
+        $row_shipping_type = $run_shipping_type->fetch();
 
-                $insert_pending_order = "INSERT INTO pending_orders (customer_id,invoice_no,product_id,qty,size,order_status) 
-                                        VALUES(:customer_id,:invoice_no,:product_id,:qty,:size,:order_status)";
-                $run_pending_order = $db_connect->prepare($insert_pending_order);
-                $run_pending_order->execute(array(':customer_id'=>$customer_id,':invoice_no'=>$invoice_no,':product_id'=>$pro_id,':qty'=>$pro_qty,':size'=>$pro_size,':order_status'=>$status));
+        $shipping_type_name = $row_shipping_type['type_name'];
 
-                $delete_cart = "DELETE FROM cart WHERE ip_add = '$ip_add'";
-                $db_connect->exec($delete_cart);
+        #--------------------------------------------------------------
+        $select_customers_addresses = "SELECT * FROM customer_addresses WHERE customer_id = '$customer_id'";
+        $run_customers_addresses = $db_connect->query($select_customers_addresses);
 
-                echo "<script>alert('Your order has been submitted, Thanks')</script>";
-                echo "<script>window.open('customer/my_account.php?my_orders','_self')</script>";
+        if($run_customers_addresses->rowCount()>0) {
+            $row_customers_addresses = $run_customers_addresses->fetch();
 
-            }
+            //Biling Details start
+            $billing_first_name = $row_customers_addresses['billing_first_name'];
+            $billing_last_name = $row_customers_addresses['billing_last_name'];
+            $billing_address_1 = $row_customers_addresses['billing_address_1'];
+            $billing_address_2 = $row_customers_addresses['billing_address_2'];
+            $billing_city = $row_customers_addresses['billing_city'];
+            $billing_state = $row_customers_addresses['billing_state'];
+            $billing_country = $row_customers_addresses['billing_country'];
+            $billing_zipcode = $row_customers_addresses['billing_zipcode'];
+
+            //Shipping Details start
+
+            $shipping_first_name = $row_customers_addresses['shipping_first_name'];
+            $shipping_last_name = $row_customers_addresses['shipping_last_name'];
+            $shipping_address_1 = $row_customers_addresses['shipping_address_1'];
+            $shipping_address_2 = $row_customers_addresses['shipping_address_2'];
+            $shipping_city = $row_customers_addresses['shipping_city'];
+            $shipping_state = $row_customers_addresses['shipping_state'];
+            $shipping_country = $row_customers_addresses['shipping_country'];
+            $shipping_zipcode = $row_customers_addresses['shipping_zipcode'];
+
+            date_default_timezone_set("America/New_York"); #set default time zone = NYC
+
+            $order_date = date("F d, Y h:i");
+
+            $payment_method = "Stripe";
+
+            $status ="pending";
+
+            $invoice_no = mt_rand();
+
+            $insert_order = "INSERT INTO orders (customer_id,invoice_no,shipping_cost,payment_method,order_date,order_total,order_status)
+                            VALUES ('$customer_id','$invoice_no','$shipping_type_name','$shipping_cost','$atripe_amount','$status')";
+
+            $run_order = $db_connect->query($insert_order);
+
+            #$last_order_id =  <-not done yet
+
+
         }
 
     }
-
 
 }
 
